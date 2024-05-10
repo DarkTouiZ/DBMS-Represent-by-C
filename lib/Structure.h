@@ -1,4 +1,4 @@
-typedef enum { false, true } bool;
+typedef enum { false, true } bool;// Define bool type -> 0 = false, 1 = true
 
 typedef struct Linked Adjacent_Node;
 typedef struct Tree Tree;
