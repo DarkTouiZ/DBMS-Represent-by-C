@@ -1,3 +1,11 @@
-ID,Name,Age
-1,DELL,55
-2,TEST,99
+initial,terminal,distance(km)
+Bangkok,Phuket,840
+ChiangMai,Pattaya,1150
+Bangkok,Krabi,780
+Phuket,ChiangRai,1380
+Pattaya,HuaHin,240
+Krabi,SuratThani,220
+ChiangRai,MaeHongSon,460
+HuaHin,Kanchanaburi,300
+SuratThani,NakhonSiThammarat,230
+MaeHongSon,UbonRatchathani,1260
