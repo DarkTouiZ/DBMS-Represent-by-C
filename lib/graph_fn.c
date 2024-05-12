@@ -13,6 +13,12 @@
 #define MAX_VERTICES 1000
 #define INFINITY 999999
 
+//struct for linked list used in BFS & DFS
+struct LinkedList {
+    int Data; // node data
+    struct LinkedList* Next; // next data
+};
+
 //struct for the each vertice of the graph
 struct Vertice {
     char label[MAX]; // vertice name
@@ -23,7 +29,7 @@ struct Vertice {
 struct Edge {
   struct Vertice u;  //start vertex of the edge
   struct Vertice v;  //end vertex of the edge
-  int weight;  //weight of the edge (u,v
+  int weight;  //weight of the edge (u,v)
 };
 
 //Graph - it consists of edges
@@ -34,7 +40,12 @@ struct Graph {
   struct Vertice *vertice; //array of vertice
 };
 
+//------------------------------------------to use------------------------------------------
 void GetShortestPathOF(Node *Initial_vertex_HEADER, Node *Terminal_vertex_HEADER, Node* weight_HEADER);
+void GetBFS(Node *Initial_vertex_HEADER, Node *Terminal_vertex_HEADER, Node* weight_HEADER);
+void GetDFS(Node *Initial_vertex_HEADER, Node *Terminal_vertex_HEADER, Node* weight_HEADER);
+//-------------------------------------------------------------------------------------------
+
 struct Graph *graphCreation(Node *Initial_vertex_HEADER, Node *Terminal_vertex_HEADER, Node* weight_HEADER);
 struct Edge *getAllEdges(Node *Initial_vertex_HEADER, Node *Terminal_vertex_HEADER, Node* weight_HEADER, int size);
 struct Vertice *getAllVertices(Node *Initial_vertex_HEADER, Node *Terminal_vertex_HEADER);
@@ -42,8 +53,26 @@ bool isUnique(char* data, struct Vertice *unique_data_set, int unique_count);
 int getTotalSize_Vertices(struct Vertice *arr);
 int getTotalSize_Edges(Node *HEADER);
 struct Graph *InitIndex(struct Graph *graph);
+struct Graph *sortMINbyWeight(struct Graph *graph);
+struct Graph *sortMAXbyWeight(struct Graph *graph);
+
 void bellmanford(struct Graph *g, char source[]);
-void display(int dst[], int pre[], int size, int initial, struct Vertice *vertice);
+void displayShortestPath(int dst[], int pre[], int size, int initial, struct Vertice *vertice);
+
+bool isEmpty(struct LinkedList* Head);
+
+void BFS(struct Graph *graph, char initial[], char terminal[]);
+struct LinkedList* enqueue(struct LinkedList* Head, int newData);
+struct LinkedList* dequeue(struct LinkedList* Head);
+int Front(struct LinkedList** Head);
+
+void DFS(struct Graph *graph, char initial[], char terminal[]);
+struct LinkedList* Push(struct LinkedList* Head, int newData);
+struct LinkedList* Pop(struct LinkedList* Head);
+int Top(struct LinkedList** Head);
+
+
+
 
 int main(){
     FILE *file = read_csv("../bin/test.csv");
@@ -54,8 +83,6 @@ int main(){
 
     Node *head = csv_to_linked_list(file);
 
-    
-    
     // case example
     Node *initial = head;
     Node *terminal = head->Next;
@@ -65,23 +92,68 @@ int main(){
     // for(int i = 0; i< Size_vertices; i++){
     //     printf("%s ", VerticesArr[i].label);
     // }
+
+    //How to use
     GetShortestPathOF(initial, terminal, weight);
-    
+    GetBFS(initial, terminal, weight);
+    GetDFS(initial, terminal, weight);
 
     return 0; 
 }
 
 void GetShortestPathOF(Node *Initial_vertex_HEADER, Node *Terminal_vertex_HEADER, Node* weight_HEADER){
+    printf(GREEN "\nShortest Path\n\n" RESET);
     struct Graph *graph = graphCreation(Initial_vertex_HEADER, Terminal_vertex_HEADER, weight_HEADER);
+    graph = sortMINbyWeight(graph);
     char source[MAX];
     printf("Enter your strating point (no space) > ");
     scanf(" %s", source);
     bellmanford(graph, source);
-    // free(graph->edge);
-    // free(graph->vertice);
-    // free(graph);
+    free(graph->edge);
+    free(graph->vertice);
+    free(graph);
     return;
 }
+
+void GetBFS(Node *Initial_vertex_HEADER, Node *Terminal_vertex_HEADER, Node* weight_HEADER){
+    printf(GREEN "\nBreadth-First Search\n\n" RESET);
+    struct Graph *graph = graphCreation(Initial_vertex_HEADER, Terminal_vertex_HEADER, weight_HEADER);
+    graph = sortMINbyWeight(graph);
+    char source[MAX], end[MAX];
+    printf("Enter your strating point (no space) > ");
+    scanf(" %s", source);
+    printf("Enter your ending point (no space) > ");
+    scanf(" %s", end);
+    BFS(graph, source, end);
+    free(graph->edge);
+    free(graph->vertice);
+    free(graph);
+    return;
+}
+
+void GetDFS(Node *Initial_vertex_HEADER, Node *Terminal_vertex_HEADER, Node* weight_HEADER){
+    printf(GREEN "\nDepth-First Search\n\n" RESET);
+    struct Graph *graph = graphCreation(Initial_vertex_HEADER, Terminal_vertex_HEADER, weight_HEADER);
+    graph = sortMAXbyWeight(graph);
+    char source[MAX], end[MAX];
+    printf("Enter your strating point (no space) > ");
+    scanf(" %s", source);
+    printf("Enter your ending point (no space) > ");
+    scanf(" %s", end);
+    DFS(graph, source, end);
+    free(graph->edge);
+    free(graph->vertice);
+    free(graph);
+    return;
+}
+
+//----------------------------Graph creation-----------------------------------------
+/*
+Create Graph by A 2d linked list consist of : Initial_vertex_HEADER, Terminal_vertex_HEADER, weight_HEADER
+Output : Graph that contain :
+    1.Total Number of Edges , Vertices.
+    2.Array of Edges, Vertices.
+*/ 
 
 struct Graph *graphCreation(Node *Initial_vertex_HEADER, Node *Terminal_vertex_HEADER, Node* weight_HEADER){
     Node *u = Initial_vertex_HEADER;
@@ -125,7 +197,6 @@ struct Graph *graphCreation(Node *Initial_vertex_HEADER, Node *Terminal_vertex_H
             // for(int i = 0; i < graph->E; i++) {
             //     printf("%d -> %d <%d>\n", graph->edge[i].u.index, graph->edge[i].v.index, graph->edge[i].weight);
             // }
-
             return graph;
         }
         //diffetent total rows of each header
@@ -134,6 +205,46 @@ struct Graph *graphCreation(Node *Initial_vertex_HEADER, Node *Terminal_vertex_H
             return NULL;
         }
     }
+}
+
+struct Graph *sortMINbyWeight(struct Graph *graph){
+    //bubble sort
+    for (int i = 0; i < graph->E - 1; i++) {
+        int swapped = 0;
+        for (int j = 0; j < graph->E - i - 1; j++) {
+            if (graph->edge[j].weight > graph->edge[j+1].weight) {
+                struct Edge temp = graph->edge[j];
+                graph->edge[j] = graph->edge[j+1];
+                graph->edge[j+1] = temp;
+                swapped = 1;
+            }
+        }
+        if (swapped == 0) {
+            break;
+        }
+    }
+
+    return graph;
+}
+
+struct Graph *sortMAXbyWeight(struct Graph *graph){
+    //bubble sort
+    for (int i = 0; i < graph->E - 1; i++) {
+        int swapped = 0;
+        for (int j = 0; j < graph->E - i - 1; j++) {
+            if (graph->edge[j].weight < graph->edge[j+1].weight) {
+                struct Edge temp = graph->edge[j];
+                graph->edge[j] = graph->edge[j+1];
+                graph->edge[j+1] = temp;
+                swapped = 1;
+            }
+        }
+        if (swapped == 0) {
+            break;
+        }
+    }
+
+    return graph;
 }
 
 struct Edge *getAllEdges(Node *Initial_vertex_HEADER, Node *Terminal_vertex_HEADER, Node* weight_HEADER, int size) {
@@ -266,6 +377,10 @@ int getTotalSize_Edges(Node *HEADER){
     return size;
 }
 
+//----------------------------END of Graph creation------------------------------------
+
+//----------------------------Shortest Path-------------------------------------------
+
 void bellmanford(struct Graph *g, char source[]) {
   //variables
   int i, j, u, v, w;
@@ -330,10 +445,10 @@ void bellmanford(struct Graph *g, char source[]) {
   //No negative weight cycle found!
   //print the distance and predecessor array
   printf(GREEN "\nAll shortest path from source: \n" RESET);
-  display(d, p, tV, Indexsource, g->vertice);
+  displayShortestPath(d, p, tV, Indexsource, g->vertice);
 }
 
-void display(int dst[], int pre[], int size, int initial, struct Vertice *vertice) {
+void displayShortestPath(int dst[], int pre[], int size, int initial, struct Vertice *vertice) {
   int i;
   for (i = 0; i < size; i++) {
     if(i==initial || dst[i] == INFINITY){
@@ -345,3 +460,183 @@ void display(int dst[], int pre[], int size, int initial, struct Vertice *vertic
   }
   printf("\n");
 }
+
+//----------------------------END of Shortest Path--------------------------------------
+
+bool isEmpty(struct LinkedList* Head){
+    if(Head == NULL){return true;}
+    return false;
+}
+
+/* BFS & DFS are travel by a less weight*/
+//----------------------------Breadth-first search--------------------------------------
+
+void BFS(struct Graph *graph, char initial[], char terminal[]){
+
+    int i, Visited[graph->V], connectionFound = 0;
+    for(i=0; i<graph->V; i++){
+        Visited[i] = 0;
+    }
+
+    for(i = 0; i<graph->V; i++){
+        if(!(strcmp(initial, graph->vertice[i].label))){
+            break;
+        }
+    }
+    int Current = i;
+
+    for(i = 0; i<graph->V; i++){
+        if(!(strcmp(terminal, graph->vertice[i].label))){
+            break;
+        }
+    }
+    int EndIndex = i;
+
+    struct LinkedList* Head = NULL;
+    Head = enqueue(Head, Current);
+
+    do {
+        Current = Front(&Head);
+        Head = dequeue(Head);
+
+        if(Visited[Current] == 1){continue;}
+
+        Visited[Current] = 1;
+
+        if(Current == EndIndex){
+            printf(GREEN "%s\n" RESET, graph->vertice[Current].label);
+            connectionFound = 1;
+            break; 
+        }
+        else{
+            printf(GREEN "%s -> " RESET, graph->vertice[Current].label);
+        }
+        
+        for(i=0; i<graph->E; i++){
+            if(graph->edge[i].u.index == Current && Visited[graph->edge[i].v.index] == 0){
+                Head = enqueue(Head, graph->edge[i].v.index);
+
+            }
+        }
+    } while ( ! isEmpty(Head) );
+
+    if (!connectionFound) {
+        printf(RED "No connection next\n" RESET);
+    }
+    
+    return;
+}
+
+struct LinkedList* enqueue(struct LinkedList* Head, int newData){
+    struct LinkedList* newNode = malloc(sizeof(struct LinkedList));
+    newNode->Data = newData;
+    newNode->Next = NULL;
+
+    if(Head == NULL){return newNode;}
+
+    struct LinkedList* Curr = Head;
+    while(Curr->Next != NULL){Curr = Curr->Next;}
+
+    Curr->Next = newNode;
+    return Head;
+}
+
+struct LinkedList* dequeue(struct LinkedList* Head){
+    if(Head == NULL){return NULL;}
+    
+    struct LinkedList* DelCurr = Head;
+    Head = Head->Next;
+
+    free(DelCurr);
+
+    return Head;
+}
+
+int Front(struct LinkedList** Head){
+    return (*Head)->Data;
+}
+
+//----------------------------END of Breadth-first search--------------------------------------
+
+//----------------------------Depth-first search----------------------------------------------
+
+void DFS(struct Graph *graph, char initial[], char terminal[]){
+
+    int i, Visited[graph->V], connectionFound = 0;
+    for(i=0; i<graph->V; i++){
+        Visited[i] = 0;
+    }
+
+    for(i = 0; i<graph->V; i++){
+        if(!(strcmp(initial, graph->vertice[i].label))){
+            break;
+        }
+    }
+    int Current = i;
+
+    for(i = 0; i<graph->V; i++){
+        if(!(strcmp(terminal, graph->vertice[i].label))){
+            break;
+        }
+    }
+    int EndIndex = i;
+
+    struct LinkedList* Head = NULL;
+    Head = Push(Head, Current);
+
+    do {
+        Current = Top(&Head);
+        Head = Pop(Head);
+
+        if(Visited[Current] == 1){continue;}
+
+        Visited[Current] = 1;
+
+        if(Current == EndIndex){
+            printf(GREEN "%s\n" RESET, graph->vertice[Current].label);
+            connectionFound = 1;
+            break; 
+        }
+        else{
+            printf(GREEN "%s -> " RESET, graph->vertice[Current].label);
+        }
+
+        for(int i=0; i<graph->E; i++){
+            if(graph->edge[i].u.index == Current && Visited[graph->edge[i].v.index] == 0){
+                Head = Push(Head, graph->edge[i].v.index);
+            }
+        }
+
+    } while ( ! isEmpty(Head) );
+
+    if (!connectionFound) {
+        printf(RED "No connection next\n" RESET);
+    }
+    
+    return ;
+}
+
+struct LinkedList* Push(struct LinkedList* Head, int newData){
+    struct LinkedList* newNode = malloc(sizeof(struct LinkedList));
+    newNode->Data = newData;
+    newNode->Next = Head;
+
+    return newNode;
+}
+
+struct LinkedList* Pop(struct LinkedList* Head){
+    if(Head == NULL){return NULL;}
+
+    struct LinkedList* DelNode = Head;
+    Head = Head->Next;
+
+    free(DelNode);
+
+    return Head;
+}
+
+int Top(struct LinkedList** Head){
+    return (*Head)->Data;
+}
+
+//----------------------------END of Depth-first search--------------------------------------
