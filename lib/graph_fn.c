@@ -34,7 +34,7 @@ struct Graph {
   struct Vertice *vertice; //array of vertice
 };
 
-Node *GetShortestPathOF(Node *Initial_vertex_HEADER, Node *Terminal_vertex_HEADER, Node* weight_HEADER);
+void GetShortestPathOF(Node *Initial_vertex_HEADER, Node *Terminal_vertex_HEADER, Node* weight_HEADER);
 struct Graph *graphCreation(Node *Initial_vertex_HEADER, Node *Terminal_vertex_HEADER, Node* weight_HEADER);
 struct Edge *getAllEdges(Node *Initial_vertex_HEADER, Node *Terminal_vertex_HEADER, Node* weight_HEADER, int size);
 struct Vertice *getAllVertices(Node *Initial_vertex_HEADER, Node *Terminal_vertex_HEADER);
@@ -42,7 +42,7 @@ bool isUnique(char* data, struct Vertice *unique_data_set, int unique_count);
 int getTotalSize_Vertices(struct Vertice *arr);
 int getTotalSize_Edges(Node *HEADER);
 struct Graph *InitIndex(struct Graph *graph);
-void bellmanford(struct Graph *g, int source);
+void bellmanford(struct Graph *g, char source[]);
 void display(int dst[], int pre[], int size, int initial, struct Vertice *vertice);
 
 int main(){
@@ -60,7 +60,7 @@ int main(){
     Node *initial = head;
     Node *terminal = head->Next;
     Node *weight = terminal->Next;
-    ////debug
+    //debug
     // printf("%d %d\n", Size_edges, Size_vertices);
     // for(int i = 0; i< Size_vertices; i++){
     //     printf("%s ", VerticesArr[i].label);
@@ -71,9 +71,16 @@ int main(){
     return 0; 
 }
 
-Node *GetShortestPathOF(Node *Initial_vertex_HEADER, Node *Terminal_vertex_HEADER, Node* weight_HEADER){
+void GetShortestPathOF(Node *Initial_vertex_HEADER, Node *Terminal_vertex_HEADER, Node* weight_HEADER){
     struct Graph *graph = graphCreation(Initial_vertex_HEADER, Terminal_vertex_HEADER, weight_HEADER);
-    bellmanford(graph, 0);
+    char source[MAX];
+    printf("Enter your strating point (no space) > ");
+    scanf(" %s", source);
+    bellmanford(graph, source);
+    // free(graph->edge);
+    // free(graph->vertice);
+    // free(graph);
+    return;
 }
 
 struct Graph *graphCreation(Node *Initial_vertex_HEADER, Node *Terminal_vertex_HEADER, Node* weight_HEADER){
@@ -115,9 +122,9 @@ struct Graph *graphCreation(Node *Initial_vertex_HEADER, Node *Terminal_vertex_H
             graph->edge = getAllEdges(u, v, weight, graph->E);
             graph = InitIndex(graph);
 
-            for(int i = 0; i < graph->E; i++) {
-                printf("%d -> %d <%d>\n", graph->edge[i].u.index, graph->edge[i].v.index, graph->edge[i].weight);
-            }
+            // for(int i = 0; i < graph->E; i++) {
+            //     printf("%d -> %d <%d>\n", graph->edge[i].u.index, graph->edge[i].v.index, graph->edge[i].weight);
+            // }
 
             return graph;
         }
@@ -153,9 +160,9 @@ struct Edge *getAllEdges(Node *Initial_vertex_HEADER, Node *Terminal_vertex_HEAD
         i++;
     }
 
-    for(int i = 0; i < size; i++) {
-        printf("%s -> %s <%d>\n", edge[i].u.label, edge[i].v.label, edge[i].weight);
-    }
+    // for(int i = 0; i < size; i++) {
+    //     printf("%s -> %s <%d>\n", edge[i].u.label, edge[i].v.label, edge[i].weight);
+    // }
 
     return edge;
 }
@@ -210,19 +217,13 @@ struct Vertice *getAllVertices(Node *Initial_vertex_HEADER, Node *Terminal_verte
         }
         curr_adj_node = curr_adj_node->Next;
     }
-
-    printf("%d\n",unique_count);
-    for(int i = 0 ; i< unique_count; i++){
-        printf("%d. %s\n",unique_vertice[i].index , unique_vertice[i].label);
-    }
-    // printf("||||||||||\n");
     
     unique_vertice = realloc(unique_vertice, unique_count * sizeof(struct Vertice));
 
-    // printf("%d\n",unique_count);
-    // for(int i = 0 ; i< unique_count+4; i++){
-    //     printf("%d. %s\n",unique_vertice[i].index , unique_vertice[i].label);
-    // }
+    printf("%d point\n",unique_count);
+    for(int i = 0 ; i< unique_count; i++){
+        printf("%d. %s\n",unique_vertice[i].index , unique_vertice[i].label);
+    }
 
     return unique_vertice;
 }
@@ -265,10 +266,16 @@ int getTotalSize_Edges(Node *HEADER){
     return size;
 }
 
-void bellmanford(struct Graph *g, int source) {
+void bellmanford(struct Graph *g, char source[]) {
   //variables
   int i, j, u, v, w;
-
+  // find a source index
+  for(i = 0; i<g->V; i++){
+    if(!(strcmp(source, g->vertice[i].label))){
+        break;
+    }
+  }
+  int Indexsource = i;
   //total vertex in the graph g
   int tV = g->V;
 
@@ -290,7 +297,7 @@ void bellmanford(struct Graph *g, int source) {
   }
 
   //mark the source vertex
-  d[source] = 0;
+  d[Indexsource] = 0;
 
   //step 2: relax edges |V| - 1 times
   for (i = 1; i <= tV - 1; i++) {
@@ -322,8 +329,8 @@ void bellmanford(struct Graph *g, int source) {
 
   //No negative weight cycle found!
   //print the distance and predecessor array
-  printf(GREEN "All shortest path from source: \n" RESET);
-  display(d, p, tV, source, g->vertice);
+  printf(GREEN "\nAll shortest path from source: \n" RESET);
+  display(d, p, tV, Indexsource, g->vertice);
 }
 
 void display(int dst[], int pre[], int size, int initial, struct Vertice *vertice) {
