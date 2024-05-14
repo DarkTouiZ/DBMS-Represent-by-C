@@ -4,11 +4,15 @@
 
 Function to use 👍 
 void GetShortestPathOF(Node *Initial_vertex_HEADER, Node *Terminal_vertex_HEADER, Node* weight_HEADER);
+
 void GetBFS(Node *Initial_vertex_HEADER, Node *Terminal_vertex_HEADER, Node* weight_HEADER);
+
 void GetDFS(Node *Initial_vertex_HEADER, Node *Terminal_vertex_HEADER, Node* weight_HEADER);
 
-- source and destination รับ input ใน function แล้ว 
+- source and destination รับ input ใน function แล้ว
+
 - ใส่ input เข้ามาแค่ *Initial_vertex_HEADER , *Terminal_vertex_HEADER, *weight_HEADER
+  
 - GetBFS , GetDFS ต้องใส่ *weight_HEADER เข้ามาด้วย เพราะใช้ weight เป็นเกณฑ์ในการ traversal
 
 Shortest Path 💯 
