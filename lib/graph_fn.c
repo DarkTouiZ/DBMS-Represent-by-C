@@ -56,8 +56,8 @@ struct Graph *InitIndex(struct Graph *graph);
 struct Graph *sortMINbyWeight(struct Graph *graph);
 struct Graph *sortMAXbyWeight(struct Graph *graph);
 
-void bellmanford(struct Graph *g, char source[]);
-void displayShortestPath(int dst[], int pre[], int size, int initial, struct Vertice *vertice);
+void bellmanford(struct Graph *g, char source[], char end[]);
+void displayShortestPath(int dst[], int pre[], int size, int initial, int terminal, struct Vertice *vertice);
 
 bool isEmpty(struct LinkedList* Head);
 
@@ -105,10 +105,12 @@ void GetShortestPathOF(Node *Initial_vertex_HEADER, Node *Terminal_vertex_HEADER
     printf(GREEN "\nShortest Path\n\n" RESET);
     struct Graph *graph = graphCreation(Initial_vertex_HEADER, Terminal_vertex_HEADER, weight_HEADER);
     graph = sortMINbyWeight(graph);
-    char source[MAX];
+    char source[MAX], end[MAX];
     printf("Enter your strating point (no space) > ");
     scanf(" %s", source);
-    bellmanford(graph, source);
+    printf("Enter your ending point (no space) > ");
+    scanf(" %s", end);
+    bellmanford(graph, source, end);
     free(graph->edge);
     free(graph->vertice);
     free(graph);
@@ -116,7 +118,7 @@ void GetShortestPathOF(Node *Initial_vertex_HEADER, Node *Terminal_vertex_HEADER
 }
 
 void GetBFS(Node *Initial_vertex_HEADER, Node *Terminal_vertex_HEADER, Node* weight_HEADER){
-    printf(GREEN "\nBreadth-First Search\n\n" RESET);
+    printf(GREEN "\n\nBreadth-First Search\n\n" RESET);
     struct Graph *graph = graphCreation(Initial_vertex_HEADER, Terminal_vertex_HEADER, weight_HEADER);
     graph = sortMINbyWeight(graph);
     char source[MAX], end[MAX];
@@ -132,7 +134,7 @@ void GetBFS(Node *Initial_vertex_HEADER, Node *Terminal_vertex_HEADER, Node* wei
 }
 
 void GetDFS(Node *Initial_vertex_HEADER, Node *Terminal_vertex_HEADER, Node* weight_HEADER){
-    printf(GREEN "\nDepth-First Search\n\n" RESET);
+    printf(GREEN "\n\nDepth-First Search\n\n" RESET);
     struct Graph *graph = graphCreation(Initial_vertex_HEADER, Terminal_vertex_HEADER, weight_HEADER);
     graph = sortMAXbyWeight(graph);
     char source[MAX], end[MAX];
@@ -331,7 +333,7 @@ struct Vertice *getAllVertices(Node *Initial_vertex_HEADER, Node *Terminal_verte
     
     unique_vertice = realloc(unique_vertice, unique_count * sizeof(struct Vertice));
 
-    printf("%d point\n",unique_count);
+    printf("%d unique data\n",unique_count);
     for(int i = 0 ; i< unique_count; i++){
         printf("%d. %s\n",unique_vertice[i].index , unique_vertice[i].label);
     }
@@ -381,7 +383,7 @@ int getTotalSize_Edges(Node *HEADER){
 
 //----------------------------Shortest Path-------------------------------------------
 
-void bellmanford(struct Graph *g, char source[]) {
+void bellmanford(struct Graph *g, char source[], char end[]) {
   //variables
   int i, j, u, v, w;
   // find a source index
@@ -391,6 +393,13 @@ void bellmanford(struct Graph *g, char source[]) {
     }
   }
   int Indexsource = i;
+  // find a end index
+  for(i = 0; i<g->V; i++){
+    if(!(strcmp(end, g->vertice[i].label))){
+        break;
+    }
+  }
+  int Indexend = i;
   //total vertex in the graph g
   int tV = g->V;
 
@@ -444,21 +453,55 @@ void bellmanford(struct Graph *g, char source[]) {
 
   //No negative weight cycle found!
   //print the distance and predecessor array
-  printf(GREEN "\nAll shortest path from source: \n" RESET);
-  displayShortestPath(d, p, tV, Indexsource, g->vertice);
+  //printf(GREEN "\nAll shortest path from source: \n" RESET);
+  displayShortestPath(d, p, tV, Indexsource, Indexend, g->vertice);
 }
 
-void displayShortestPath(int dst[], int pre[], int size, int initial, struct Vertice *vertice) {
-  int i;
-  for (i = 0; i < size; i++) {
-    if(i==initial || dst[i] == INFINITY){
-      continue;
+// source node to all
+// void displayShortestPath(int dst[], int pre[],  int size, int initial, int terminal, struct Vertice *vertice) {
+//     int i;
+//     for (i = 0; i < size; i++) {
+//         if(i==initial || dst[i] == INFINITY){
+//         continue;
+//         }
+//         printf(GREEN "\n%s to %s distance = %d and check point is %s\n" RESET, 
+//         vertice[initial].label, vertice[i].label, 
+//         dst[i], vertice[pre[i]].label);
+//     }
+// }
+
+void displayShortestPath(int dst[], int pre[],  int size, int initial, int terminal, struct Vertice *vertice) {
+    // shortest distaace
+    int i, j = 0;
+    for (i = 0; i < size; i++) {
+        if(i == terminal){
+            if(dst[i] == INFINITY){
+                printf(RED "No shortest path\n" RESET);
+                return;
+            }
+            printf(GREEN "\n%s to %s distance = %d\n" RESET, 
+            vertice[initial].label, vertice[i].label, 
+            dst[i]);
+        }
     }
-    printf(GREEN "\n%s to %s distance = %d and check point is %s\n" RESET, 
-    vertice[initial].label, vertice[i].label, 
-    dst[i], vertice[pre[i]].label);
-  }
-  printf("\n");
+    // shortest path
+    i =terminal;
+    int path[size];
+
+    printf(GREEN "Path : " RESET);
+    path[j] = terminal;
+    while (i != initial) {
+        j++;
+        path[j] = i = pre[i];
+    }
+
+    for (int i = j; i >= 0; i--) {
+        if (i == 0) {
+            printf(GREEN "%s" RESET, vertice[path[i]].label);
+        } else {
+            printf(GREEN "%s -> " RESET, vertice[path[i]].label);
+        }
+    }
 }
 
 //----------------------------END of Shortest Path--------------------------------------
@@ -495,6 +538,7 @@ void BFS(struct Graph *graph, char initial[], char terminal[]){
     struct LinkedList* Head = NULL;
     Head = enqueue(Head, Current);
 
+    printf("\n");
     do {
         Current = Front(&Head);
         Head = dequeue(Head);
@@ -584,6 +628,7 @@ void DFS(struct Graph *graph, char initial[], char terminal[]){
     struct LinkedList* Head = NULL;
     Head = Push(Head, Current);
 
+    printf("\n");
     do {
         Current = Top(&Head);
         Head = Pop(Head);
