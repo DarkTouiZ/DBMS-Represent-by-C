@@ -2,7 +2,8 @@
 
 ✨ New : Graph function ( Shortest Path , BFS , DFS )
 
-Function to use 👍 
+Function to use 👍
+
 void GetShortestPathOF(Node *Initial_vertex_HEADER, Node *Terminal_vertex_HEADER, Node* weight_HEADER);
 
 void GetBFS(Node *Initial_vertex_HEADER, Node *Terminal_vertex_HEADER, Node* weight_HEADER);
