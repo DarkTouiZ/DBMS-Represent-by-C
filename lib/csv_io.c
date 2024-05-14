@@ -84,7 +84,7 @@ Node *csv_to_linked_list(FILE *file) {
                 } else {
                     curr_node->Tail->Next = new_adj_node;
                 }
-                curr_node->Tail = new_adj_node;
+                curr_node->Tail = new_adj_node;      
                 curr_adj_node = new_adj_node;
 
                 // Check if the data is an integer
@@ -193,22 +193,22 @@ void check_type(Node *head) {
     }
 }
 
-// ตัวอย่างการใช้งาน
-int main()
-{
-    FILE *file = read_csv("../bin/test.csv");
-    if (file == NULL)
-    {
-        return 1;
-    }
+// // ตัวอย่างการใช้งาน
+// int main()
+// {
+//     FILE *file = read_csv("../bin/test.csv");
+//     if (file == NULL)
+//     {
+//         return 1;
+//     }
 
-    Node *head = csv_to_linked_list(file);
-    // display_linked_list(head);
-    // check_type(head);
+//     Node *head = csv_to_linked_list(file);
+//     display_linked_list(head);
+//     // check_type(head);
 
-    linked_list_to_csv(head, "../bin/test_output.csv");
+//     // linked_list_to_csv(head, "../bin/test_output.csv");
 
-    fclose(file);
+//     fclose(file);
 
-    return 0;
-}
+//     return 0;
+// }
