@@ -55,6 +55,7 @@ int getTotalSize_Edges(Node *HEADER);
 struct Graph *InitIndex(struct Graph *graph);
 struct Graph *sortMINbyWeight(struct Graph *graph);
 struct Graph *sortMAXbyWeight(struct Graph *graph);
+bool checkNULLin(Node *HEADER);
 
 void bellmanford(struct Graph *g, char source[], char end[]);
 void displayShortestPath(int dst[], int pre[], int size, int initial, int terminal, struct Vertice *vertice);
@@ -102,6 +103,11 @@ int main(){
 }
 
 void GetShortestPathOF(Node *Initial_vertex_HEADER, Node *Terminal_vertex_HEADER, Node* weight_HEADER){
+    if(checkNULLin(Initial_vertex_HEADER) || checkNULLin(Terminal_vertex_HEADER) || checkNULLin(weight_HEADER)){
+        printf( RED "Error : NULL VALUE\n" RESET );
+        return;
+    }
+
     printf(GREEN "\nShortest Path\n\n" RESET);
     struct Graph *graph = graphCreation(Initial_vertex_HEADER, Terminal_vertex_HEADER, weight_HEADER);
     graph = sortMINbyWeight(graph);
@@ -118,6 +124,11 @@ void GetShortestPathOF(Node *Initial_vertex_HEADER, Node *Terminal_vertex_HEADER
 }
 
 void GetBFS(Node *Initial_vertex_HEADER, Node *Terminal_vertex_HEADER, Node* weight_HEADER){
+    if(checkNULLin(Initial_vertex_HEADER) || checkNULLin(Terminal_vertex_HEADER) || checkNULLin(weight_HEADER)){
+        printf( RED "Error : NULL VALUE\n" RESET );
+        return;
+    }
+
     printf(GREEN "\n\nBreadth-First Search\n\n" RESET);
     struct Graph *graph = graphCreation(Initial_vertex_HEADER, Terminal_vertex_HEADER, weight_HEADER);
     graph = sortMINbyWeight(graph);
@@ -134,6 +145,11 @@ void GetBFS(Node *Initial_vertex_HEADER, Node *Terminal_vertex_HEADER, Node* wei
 }
 
 void GetDFS(Node *Initial_vertex_HEADER, Node *Terminal_vertex_HEADER, Node* weight_HEADER){
+    if(checkNULLin(Initial_vertex_HEADER) || checkNULLin(Terminal_vertex_HEADER) || checkNULLin(weight_HEADER)){
+        printf( RED "Error : NULL VALUE\n" RESET );
+        return;
+    }
+
     printf(GREEN "\n\nDepth-First Search\n\n" RESET);
     struct Graph *graph = graphCreation(Initial_vertex_HEADER, Terminal_vertex_HEADER, weight_HEADER);
     graph = sortMAXbyWeight(graph);
@@ -377,6 +393,25 @@ int getTotalSize_Edges(Node *HEADER){
     }
 
     return size;
+}
+
+bool checkNULLin(Node *HEADER) {
+    // Check if head is NULL
+    if (HEADER == NULL) {
+        printf(RED "Error: Head node is NULL\n" RESET);
+        return -1;
+    }
+
+    // Traverse the adjacency list
+    Adjacent_Node *curr_adj_node = HEADER->Head;
+    while (curr_adj_node != NULL) {
+        if(!strcmp(curr_adj_node->Data, "NULL")){
+            return true;
+        }
+        curr_adj_node = curr_adj_node->Next;
+    }
+
+    return false;
 }
 
 //----------------------------END of Graph creation------------------------------------
