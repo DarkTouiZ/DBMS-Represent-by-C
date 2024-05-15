@@ -106,9 +106,9 @@ void GetShortestPathOF(Node *Initial_vertex_HEADER, Node *Terminal_vertex_HEADER
     struct Graph *graph = graphCreation(Initial_vertex_HEADER, Terminal_vertex_HEADER, weight_HEADER);
     graph = sortMINbyWeight(graph);
     char source[MAX], end[MAX];
-    printf("Enter your strating point (no space) > ");
+    printf("Enter your origin > ");
     scanf(" %s", source);
-    printf("Enter your ending point (no space) > ");
+    printf("Enter your destination > ");
     scanf(" %s", end);
     bellmanford(graph, source, end);
     free(graph->edge);
@@ -122,9 +122,9 @@ void GetBFS(Node *Initial_vertex_HEADER, Node *Terminal_vertex_HEADER, Node* wei
     struct Graph *graph = graphCreation(Initial_vertex_HEADER, Terminal_vertex_HEADER, weight_HEADER);
     graph = sortMINbyWeight(graph);
     char source[MAX], end[MAX];
-    printf("Enter your strating point (no space) > ");
+    printf("Enter your origin > ");
     scanf(" %s", source);
-    printf("Enter your ending point (no space) > ");
+    printf("Enter your destination > ");
     scanf(" %s", end);
     BFS(graph, source, end);
     free(graph->edge);
@@ -138,9 +138,9 @@ void GetDFS(Node *Initial_vertex_HEADER, Node *Terminal_vertex_HEADER, Node* wei
     struct Graph *graph = graphCreation(Initial_vertex_HEADER, Terminal_vertex_HEADER, weight_HEADER);
     graph = sortMAXbyWeight(graph);
     char source[MAX], end[MAX];
-    printf("Enter your strating point (no space) > ");
+    printf("Enter your origin > ");
     scanf(" %s", source);
-    printf("Enter your ending point (no space) > ");
+    printf("Enter your destination > ");
     scanf(" %s", end);
     DFS(graph, source, end);
     free(graph->edge);
