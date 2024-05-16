@@ -88,7 +88,6 @@ void InsertRecord(Node* First_Table_Head){
             }
             newNode->Prev = Curr_Table_Head->Adj_Tail;
         }
-        // printf("A");
 
         //Undate Tail_Pointer
         Curr_Table_Head->Adj_Tail = newNode;
@@ -98,6 +97,15 @@ void InsertRecord(Node* First_Table_Head){
         Token = strtok(NULL, " ");
         // printf("%s\n", Token);
     }
+}
+
+int Find_Row_Size(Adjacent_Node* Curr_Adj_Node){
+    int Count = 0;
+    while(Curr_Adj_Node != NULL){
+        Count++;
+        Curr_Adj_Node = Curr_Adj_Node->Next;
+    }
+    return Count;
 }
 
 void InsertColumn(Node* First_Table_Head){
@@ -141,8 +149,12 @@ void InsertColumn(Node* First_Table_Head){
 
     // Fill new Data for each Record
     char* Token = strtok(InputLine, " ");
+    int Count = 1;
+    int Max = Find_Row_Size(First_Table_Head->Adj_Head);
 
+    Adjacent_Node* PreCurr_Data = NULL; // Store PreCurr Node
     while(Token != NULL){ // Add to Tail
+
         //Create new_Adj_Node
         Adjacent_Node* new_Adj_Node = CreateAdj_Node(Token);
 
@@ -155,13 +167,42 @@ void InsertColumn(Node* First_Table_Head){
             new_Head_Node->Adj_Tail = new_Adj_Node;
         }
 
+        new_Adj_Node->Left = PreCurr_Data; // Add Left Node
+        if(PreCurr_Data != NULL){
+            PreCurr_Data->Right = new_Adj_Node;
+            PreCurr_Data = PreCurr_Data->Next;
+        }
+
         if(!is_Integer(Token)){
             new_Head_Node->Type = false;
         }
 
         Token = strtok(NULL, " ");
+        Count++;
     }
-}   
+
+    while(Count <= Max){
+        char* Token = "NaN";
+
+        //Create new_Adj_Node
+        Adjacent_Node* new_Adj_Node = CreateAdj_Node(Token);
+        Count++;
+
+        new_Head_Node->Adj_Tail->Next = new_Adj_Node;
+        new_Adj_Node->Prev = new_Head_Node->Adj_Tail;
+        new_Head_Node->Adj_Tail = new_Adj_Node;
+
+        new_Adj_Node->Left = PreCurr_Data; // Add Left Node
+        if(PreCurr_Data != NULL){
+            PreCurr_Data->Right = new_Adj_Node;
+            PreCurr_Data = PreCurr_Data->Next;
+        }
+
+        if(!is_Integer(Token)){
+            new_Head_Node->Type = false;
+        }
+    }
+}
 
 // Example of Usage
 // int main()

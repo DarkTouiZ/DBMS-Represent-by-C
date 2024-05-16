@@ -149,6 +149,7 @@ void printTable(Node* Table)
         } else if (move_command == 'e') {                                                       //Exit
             break;
         }
+        system("cls");
     }
 
     //Free Data
