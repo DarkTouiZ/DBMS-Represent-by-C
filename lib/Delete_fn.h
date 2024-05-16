@@ -62,8 +62,12 @@ void DeleteRow(Node* Table, int rowindex)
 
         //Delete the row
         Previous_Row->Next = Current_Row->Next;
-        Current_Row->Left->Right = Current_Row->Right;
-        Current_Row->Right->Left = Current_Row->Left;
+        if(Current_Row->Left != NULL){
+            Current_Row->Left->Right = Current_Row->Right;
+        }
+        if(Current_Row->Right != NULL){
+            Current_Row->Right->Left = Current_Row->Left;
+        }
         free(Current_Row);
         Current_Column = Current_Column->Next;
     }
