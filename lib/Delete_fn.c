@@ -75,3 +75,4 @@ void DeleteRow(Node* Table, char* row)
         Current_Column = Current_Column->Next;
     }
 }
+// all the functions are not tested yet
