@@ -1,4 +1,5 @@
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 #include "Header.c"
 =======
 #include "lib/Header.c"
@@ -23,4 +24,7 @@ int main()
 
         return 0;
 }
+>>>>>>> Stashed changes
+=======
+#include "lib/Header.c"
 >>>>>>> Stashed changes
