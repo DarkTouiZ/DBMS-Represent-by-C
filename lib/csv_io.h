@@ -20,6 +20,23 @@ void Linked_Left_Right(Node* First_Head_Table){
     }
 }
 
+void Linked_Prev_Next(Node* First_Head_Table)
+{
+    Node* Head_Table_Curr = First_Head_Table;
+    while (Head_Table_Curr != NULL)
+    { // Loop for each in Column
+        Adjacent_Node* PreCurr_Adj_Node = NULL;
+        Adjacent_Node* Curr_Adj_Node = Head_Table_Curr->Adj_Head;
+        while (Curr_Adj_Node != NULL)
+        { // Loop for each in Record
+            Curr_Adj_Node->Prev = PreCurr_Adj_Node;
+            PreCurr_Adj_Node = Curr_Adj_Node;
+            Curr_Adj_Node = Curr_Adj_Node->Next;
+        }
+        Head_Table_Curr = Head_Table_Curr->Next;
+    }
+}
+
 // read csv function
 FILE *read_csv(char *filename)
 {
@@ -43,7 +60,7 @@ FILE *read_csv(char *filename)
         else
         {
             printf("Goodbye\n");
-            return 0;
+            exit(0);
         }
     }
     // Check if the file has a .csv extension
@@ -132,6 +149,7 @@ Node *csv_to_linked_list(FILE *file) {
     }
 
     Linked_Left_Right(Adj_Head); // Linked Left and Right Node for each Data
+    Linked_Prev_Next(Adj_Head);
     return Adj_Head;
 }
 

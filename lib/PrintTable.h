@@ -121,7 +121,10 @@ void printTable(Node *Table)
             {
                 printf("| %-12s ", Current_Column_Print->Data);
             }
-            Current_Column_Print = Current_Column_Print->Next;
+                Current_Column_Print = Current_Column_Print->Next;
+            // if(Current_Column_Print == NULL){
+            //     break;
+            // }
         }
         printf("|\n");
 

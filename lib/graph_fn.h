@@ -112,9 +112,9 @@ void GetShortestPathOF(Node *Initial_vertex_HEADER, Node *Terminal_vertex_HEADER
     struct Graph *graph = graphCreation(Initial_vertex_HEADER, Terminal_vertex_HEADER, weight_HEADER);
     graph = sortMINbyWeight(graph);
     char source[MAX], end[MAX];
-    printf("Enter your origin > ");
+    printf("Enter your origin name > ");
     scanf(" %s", source);
-    printf("Enter your destination > ");
+    printf("Enter your destination name > ");
     scanf(" %s", end);
     bellmanford(graph, source, end);
     free(graph->edge);
@@ -135,9 +135,9 @@ void GetBFS(Node *Initial_vertex_HEADER, Node *Terminal_vertex_HEADER, Node *wei
     struct Graph *graph = graphCreation(Initial_vertex_HEADER, Terminal_vertex_HEADER, weight_HEADER);
     graph = sortMINbyWeight(graph);
     char source[MAX], end[MAX];
-    printf("Enter your origin > ");
+    printf("Enter your origin name > ");
     scanf(" %s", source);
-    printf("Enter your destination > ");
+    printf("Enter your destination name > ");
     scanf(" %s", end);
     BFS(graph, source, end);
     free(graph->edge);
@@ -158,9 +158,9 @@ void GetDFS(Node *Initial_vertex_HEADER, Node *Terminal_vertex_HEADER, Node *wei
     struct Graph *graph = graphCreation(Initial_vertex_HEADER, Terminal_vertex_HEADER, weight_HEADER);
     graph = sortMAXbyWeight(graph);
     char source[MAX], end[MAX];
-    printf("Enter your origin > ");
+    printf("Enter your origin name > ");
     scanf(" %s", source);
-    printf("Enter your destination > ");
+    printf("Enter your destination name > ");
     scanf(" %s", end);
     DFS(graph, source, end);
     free(graph->edge);
@@ -387,7 +387,7 @@ struct Vertice *getAllVertices(Node *Initial_vertex_HEADER, Node *Terminal_verte
     printf("%d unique data\n", unique_count);
     for (int i = 0; i < unique_count; i++)
     {
-        printf("%d. %s\n", unique_vertice[i].index, unique_vertice[i].label);
+        printf("%d. %s\n", unique_vertice[i].index + 1, unique_vertice[i].label);
     }
 
     *size = unique_count;

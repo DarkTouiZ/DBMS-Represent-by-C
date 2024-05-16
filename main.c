@@ -5,12 +5,12 @@ int main()
     printf("Welcome to the Database Program\n");
     printf("please enter file path or enter filename to create new\n");
     char *Table_name = (char *)malloc(100 * sizeof(char));
-    // scanf(" %s", Table_name);
-    strcpy(Table_name,"bin/test.csv");
+    scanf(" %s", Table_name);
+    // strcpy(Table_name,"bin/test.csv");
     FILE *file = read_csv(Table_name);
     Node *First_Table_Head = csv_to_linked_list(file);
     fclose(file);
-    main_Page = false;
+    main_Page = true;
     while (1)
     {
         if (main_Page == true)
@@ -20,11 +20,17 @@ int main()
         else if (main_Page == false)
         {
             // system("cls");
-            printf("Please enter the command\n");
-            printf("insert, delete, update, search, graph, exit\n");
+            printf("\nPlease enter the command\n");
+            printf("table, insert, delete, update, search, graph, exit\n");
             char *command = (char *)malloc(100 * sizeof(char));
             scanf(" %s", command);
-            if (strcmp(command, "insert") == 0)
+            if (strcmp(command, "table") == 0)
+            {
+                main_Page = true;
+                // printTable(First_Table_Head);
+                // continue;
+            }
+            else if (strcmp(command, "insert") == 0)
             {
                 printf("What kind of insert do you want?\n");
                 printf("1. Insert Row\n");
@@ -35,6 +41,7 @@ int main()
                 if (choice == 1)
                 {
                     InsertRecord(First_Table_Head);
+                    printTable(First_Table_Head);
                 }
                 else if (choice == 2)
                 {
@@ -90,16 +97,114 @@ int main()
                 scanf(" %s", NewData);
                 SelectToChangeAt(First_Table_Head, row, column, NewData);
                 free(NewData);
-            }else if (strcmp(command, "graph") == 0)
+            }
+            else if (strcmp(command, "search") == 0)
             {
-                printf("plase enter the column name follow these requirements\n");
+                printf("What kind of search do you want?\n");
+                printf("1. Search for row number\n");
+                printf("2. Search for record\n");
+                printf("3. Make indexing\n");
+                int choice;
+                scanf(" %d", &choice);
+                if (choice == 1)
+                {
+                    printf("What is the column name you want to search: ");
+                    char ColumnName[MAX_STRING_LENGTH];
+                    scanf(" %s", ColumnName);
+
+                    Node *Curr = First_Table_Head;
+                    while (Curr != NULL)
+                    {
+                        if (strcmp(Curr->Data, ColumnName) == 0)
+                        {
+                            break;
+                        }
+                        Curr = Curr->Next;
+                    }
+                    if (Curr == NULL)
+                    {
+                        printf("Column name not match any in database\n");
+                    }
+                    else
+                    {
+                        printf("What is the target do you search for: ");
+                        char Target[MAX_STRING_LENGTH];
+                        scanf(" %s", Target);
+                        int PositionIndex = GetPosition(Curr, Target);
+                        if (PositionIndex != -1)
+                            printf("Row number of %s in column %s is %d", Target, ColumnName, PositionIndex);
+                    }
+                }
+                else if (choice == 2)
+                {
+                    printf("What is the column name You want to search: ");
+                    char ColumnName[MAX_STRING_LENGTH];
+                    scanf(" %s", ColumnName);
+
+                    Node *Curr = First_Table_Head;
+                    while (Curr != NULL)
+                    {
+                        if (strcmp(Curr->Data, ColumnName) == 0)
+                        {
+                            break;
+                        }
+                        Curr = Curr->Next;
+                    }
+                    if (Curr == NULL)
+                    {
+                        printf("Column name not match any in database\n");
+                    }
+                    else
+                    {
+                        printf("What is the target do you search for: ");
+                        char Target[MAX_STRING_LENGTH];
+                        scanf(" %s", Target);
+                        int ReturnIndex;
+                        Adjacent_Node *Actual_Data = Search_Adj_Node(Curr, Target, &ReturnIndex);
+                        printf("How many column for above and downward you want to display: ");
+                        int Num;
+                        scanf(" %d", &Num);
+                        PrintRecord_by_Ref(Actual_Data, Num);
+                    }
+                }
+                else if (choice == 3)
+                {
+                    printf("what is column name do you want to make indexing: ");
+                    char ColumnName[MAX_STRING_LENGTH];
+                    scanf(" %s", ColumnName);
+                    Node *Curr = First_Table_Head;
+                    while (Curr != NULL)
+                    {
+                        if (strcmp(Curr->Data, ColumnName) == 0)
+                        {
+                            break;
+                        }
+                        Curr = Curr->Next;
+                    }
+                    if (Curr == NULL)
+                    {
+                        printf("Column name not match any in database\n");
+                    }
+                    else
+                    {
+                        MakeIndexing(Curr);
+                    }
+                }
+                else
+                {
+                    printf("Invalid choice\n");
+                }
+            }
+            else if (strcmp(command, "graph") == 0)
+            {
+                printf("please enter the column name follow these requirements\n");
                 printf("initial vertex column name: ");
-                char initialname[MAX_STRING_LENGTH];
-                scanf(" %s", initialname);
+                char initialName[MAX_STRING_LENGTH];
+                scanf(" %s", initialName);
                 Node *Curr1 = First_Table_Head;
                 while (Curr1 != NULL)
                 {
-                    if (strcmp(Curr1->Data, initialname) == 0)
+                    if (strcmp(Curr1->Data, initialName) == 0)
                     {
                         break;
                     }
@@ -112,12 +217,12 @@ int main()
                 else
                 {
                     printf("terminal vertex column name: ");
-                    char terminalname[MAX_STRING_LENGTH];
-                    scanf(" %s", terminalname);
+                    char terminalName[MAX_STRING_LENGTH];
+                    scanf(" %s", terminalName);
                     Node *Curr2 = First_Table_Head;
                     while (Curr2 != NULL)
                     {
-                        if (strcmp(Curr2->Data, terminalname) == 0)
+                        if (strcmp(Curr2->Data, terminalName) == 0)
                         {
                             break;
                         }
@@ -130,12 +235,12 @@ int main()
                     else
                     {
                         printf("weight column name: ");
-                        char weightname[MAX_STRING_LENGTH];
-                        scanf(" %s", weightname);
+                        char weightName[MAX_STRING_LENGTH];
+                        scanf(" %s", weightName);
                         Node *Curr3 = First_Table_Head;
                         while (Curr3 != NULL)
                         {
-                            if (strcmp(Curr3->Data, weightname) == 0)
+                            if (strcmp(Curr3->Data, weightName) == 0)
                             {
                                 break;
                             }
@@ -173,8 +278,16 @@ int main()
                     }
                 }
             }
-
-            break;
+            else if (strcmp(command, "exit") == 0)
+            {
+                linked_list_to_csv(First_Table_Head, "../bin/test_output.csv");
+                fclose(file);
+                break;
+            }
+            else
+            {
+                printf("Invalid command\n");
+            }
         }
     }
     
