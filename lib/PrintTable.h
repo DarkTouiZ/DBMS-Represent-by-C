@@ -152,7 +152,7 @@ void printTable(Node *Table)
         }
 
         // Ask for command (w a s d)
-        printf("Enter 'w' to move up, 'a' to move left, 's' to move down, 'd' to move right, 'e' to exit: ");
+        printf("Enter 'w' to move up, 'a' to move left, 's' to move down, 'd' to move right, 'o' to option, 'e' to exit: ");
         scanf(" %c", &move_command);
 
         if (move_command == 'd' && curr_col + num_display_col < max_size_col)
@@ -171,9 +171,15 @@ void printTable(Node *Table)
         { // Up
             curr_row -= move_setting;
         }
+        else if (move_command == 'o')
+        { // move to option page
+            main_Page = false;
+            return;
+        }
         else if (move_command == 'e')
         { // Exit
-            break;
+            main_Page = false;
+            exit(0);
         }
         system("cls");
     }
