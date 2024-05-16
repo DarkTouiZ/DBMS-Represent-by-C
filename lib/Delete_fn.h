@@ -1,6 +1,4 @@
-#include "Header.c"
-
-void DeleteDataAt(Node* Table, char* row, char* column)
+void DeleteDataAt(Node* Table, int rowindex, char* column)
 {
     //find the column
     Node* Current_Column = Table;
@@ -15,17 +13,15 @@ void DeleteDataAt(Node* Table, char* row, char* column)
 
     //find the row
     Adjacent_Node* Current_Row = Current_Column->Adj_Head;
-    while (Current_Row != NULL)
+    int Count = 0;
+    while (Count < rowindex)
     {
-        if (strcmp(Current_Row->Data, row) == 0)
-        {
-            break;
-        }
         Current_Row = Current_Row->Next;
+        Count++;
     }
 
     //Delete the data at the position (change the data to Nan)
-    strcpy(Current_Row->Data, "Nan");
+    strcpy(Current_Row->Data, "NaN");
 }
 
 void DeleteColumn(Node* Table, char* column)
@@ -48,7 +44,7 @@ void DeleteColumn(Node* Table, char* column)
     free(Current_Column);
 }
 
-void DeleteRow(Node* Table, char* row)
+void DeleteRow(Node* Table, int rowindex)
 {
     //find the row
     Node* Current_Column = Table;
@@ -56,14 +52,12 @@ void DeleteRow(Node* Table, char* row)
     {
         Adjacent_Node* Current_Row = Current_Column->Adj_Head;
         Adjacent_Node* Previous_Row = Current_Column->Adj_Head;
-        while (Current_Row != NULL)
+        int Count = 0; // Start at 0
+        while (Count < rowindex)
         {
-            if (strcmp(Current_Row->Data, row) == 0)
-            {
-                break;
-            }
             Previous_Row = Current_Row;
             Current_Row = Current_Row->Next;
+            Count++;
         }
 
         //Delete the row
@@ -72,3 +66,22 @@ void DeleteRow(Node* Table, char* row)
         Current_Column = Current_Column->Next;
     }
 }
+
+// int main()
+// {
+//     FILE *file = read_csv("../bin/test.csv");
+//     if (file == NULL)
+//     {
+//         return 1;
+//     }
+
+//     Node *First_Table_Head = csv_to_linked_list(file);
+//     fclose(file);
+
+//     DeleteDataAt(First_Table_Head, 9, "Distance");
+
+//     linked_list_to_csv(First_Table_Head, "../bin/test_output.csv");
+
+
+//     return 0;
+// }
