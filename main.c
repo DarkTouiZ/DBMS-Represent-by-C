@@ -49,7 +49,11 @@ int main()
         }
         else if(strcmp(command, "update") == 0){
             printf("enter the row and column you want to update\n");
-            SelectToChangeAt(Table_namem, row, column, NewData);
+            int row, column;
+            scanf(" %d %d", &row, &column);
+            printf("enter the new data\n");
+            char* NewData = (char*)malloc(100 * sizeof(char));
+            SelectToChangeAt(Table_name, row, column, NewData);
         }
         else if(strcmp(command, "exit") == 0){
             break;
