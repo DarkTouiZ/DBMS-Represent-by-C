@@ -70,13 +70,15 @@ int main()
     Node *First_Table_Head = csv_to_linked_list(file);
     fclose(file);
 
+    printTable(First_Table_Head);
+
     // First_Table_Head = MakeIndexing(First_Table_Head);
     // int Index = GetPosition(First_Table_Head, "Delhi");
     // PrintRecord(First_Table_Head, Index);
 
-    InsertRecord(First_Table_Head);
-    Adjacent_Node* Curr = First_Table_Head->Next->Adj_Tail; 
-    printf("%s %s %s", Curr->Left->Data, Curr->Data, Curr->Right->Data);
+    // InsertRecord(First_Table_Head);
+    // Adjacent_Node* Curr = First_Table_Head->Next->Adj_Tail; 
+    // printf("%s %s %s", Curr->Left->Data, Curr->Data, Curr->Right->Data);
     
     // printf("%s %d", Actual_Data_Curr->Data, *Return_RowIndex);
 
