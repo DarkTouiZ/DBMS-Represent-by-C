@@ -1,8 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include "csv_io.c"
-
 //Just use : printTable(head);
 
 int max_size_row = 0; // Max Number of Rows
@@ -12,10 +7,11 @@ int max_size_col = 0; // Max Number of Columns
 void freeLinkedList(Node* head) {
     Node* temp;
     while (head != NULL) {
+        printf("OK");
         temp = head;
         head = head->Next;
 
-        Adjacent_Node* curr_adj_node = temp->Head;
+        Adjacent_Node* curr_adj_node = temp->Adj_Head;
         while (curr_adj_node != NULL) {
             Adjacent_Node* temp_adj = curr_adj_node;
             curr_adj_node = curr_adj_node->Next;
@@ -36,7 +32,7 @@ void FindSize(Node *head){
         int size = 1;
         max_size_col++;
         // Traverse the rows
-        Adjacent_Node *curr_adj_node = curr_Table_Head->Head;
+        Adjacent_Node *curr_adj_node = curr_Table_Head->Adj_Head;
         while (curr_adj_node != NULL){
             size++;
             curr_adj_node = curr_adj_node->Next;
@@ -80,7 +76,7 @@ void printTable(Node* Table)
     int i = 0;
     while (Current_Column_Print != NULL)
     {
-        Current_Row_Print = Current_Column_Print->Head;
+        Current_Row_Print = Current_Column_Print->Adj_Head;
         int j = 0;
         while (Current_Row_Print != NULL)
         {
@@ -104,7 +100,7 @@ void printTable(Node* Table)
     while(1) {
         //Print Column Name
         Current_Column_Print = Table;
-        Current_Row_Print = Current_Column_Print->Head;
+        Current_Row_Print = Current_Column_Print->Adj_Head;
 
         printf("\n");
         printf("    ");
@@ -160,7 +156,6 @@ void printTable(Node* Table)
         free(Data[i]);
     }
     free(Data);
-    freeLinkedList(Table);
 }
 
 // int main(){
@@ -169,8 +164,9 @@ void printTable(Node* Table)
 //         return 1;
 //     }
 //     Node *head = csv_to_linked_list(file);
+    
 //     // FindSize(head);
 //     printTable(head);
-//     freeLinkedList(head);
+//     // freeLinkedList(head);
 //     return 0;
 // }

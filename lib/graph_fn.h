@@ -405,7 +405,7 @@ bool checkNULLin(Node *HEADER) {
     // Traverse the adjacency list
     Adjacent_Node *curr_adj_node = HEADER->Adj_Head;
     while (curr_adj_node != NULL) {
-        if(!strcmp(curr_adj_node->Data, "NULL")){
+        if(!strcmp(curr_adj_node->Data, "NaN")){
             return true;
         }
         curr_adj_node = curr_adj_node->Next;
