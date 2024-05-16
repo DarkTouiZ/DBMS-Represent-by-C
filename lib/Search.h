@@ -62,8 +62,8 @@ Adjacent_Node *Search_Adj_Node(Node *Table_Head, char *Target, int *Return_RowIn
             Actual_Data = Actual_Data->Next;
             Count++;
         }
-        *Return_RowIndex = Count;
-        return Actual_Data;
+        (*Return_RowIndex) = Count;
+        return (Actual_Data);
     }
     return Actual_Data;
 }
@@ -71,20 +71,21 @@ Adjacent_Node *Search_Adj_Node(Node *Table_Head, char *Target, int *Return_RowIn
 // Return RowIndex and Actual Data Node
 int GetPosition(Node *Column_Head, char *Target)
 {
-    int *Return_RowIndex;
-    Adjacent_Node *Actual_Data_Curr = Search_Adj_Node(Column_Head, Target, Return_RowIndex);
+    int Return_RowIndex;
+    Adjacent_Node *Actual_Data_Curr = Search_Adj_Node(Column_Head, Target, &Return_RowIndex);
     if (Actual_Data_Curr == NULL)
     {
         printf("Not found data\n");
+        return -1;
     }
-    return *Return_RowIndex;
+    return Return_RowIndex;
 }
 
 // Usage the Return to print that Record
 void PrintRecord_by_Ref(Adjacent_Node *Ref_Node, int Num)
 {
     Adjacent_Node *Curr = Ref_Node;
-    for (int i = 0; i <= Num; i++)
+    for (int i = 0; i < Num; i++)
     { // Back to Top
         if (Curr->Prev != NULL)
         {
@@ -95,7 +96,7 @@ void PrintRecord_by_Ref(Adjacent_Node *Ref_Node, int Num)
     { // Back to Left
         Curr = Curr->Left;
     }
-    for (int i = 0; i < Num * 2; i++)
+    for (int i = 0; i < (Num * 2) + 1; i++)
     {
         Adjacent_Node *Curr_Temp = Curr;
         while (Curr_Temp != NULL)
