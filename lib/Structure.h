@@ -2,6 +2,8 @@ typedef enum { false, true } bool;// Define bool type -> 0 = false, 1 = true
 
 #define MAX_STRING_LENGTH 1000
 
+bool main_Page = true;
+
 typedef struct Linked Adjacent_Node;
 typedef struct Tree Tree;
 
