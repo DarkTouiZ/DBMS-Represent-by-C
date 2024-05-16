@@ -1,8 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include "csv_io.c"
-
 //Just use : printTable(head);
 
 int max_size_row = 0; // Max Number of Rows
@@ -157,6 +152,7 @@ void printTable(Node* Table)
         } else if (move_command == 'e') {                                                       //Exit
             break;
         }
+        system("cls");
     }
 
     //Free Data
@@ -164,15 +160,14 @@ void printTable(Node* Table)
         free(Data[i]);
     }
     free(Data);
-    freeLinkedList(Table);
 }
 
-int main(){
-    FILE *file = read_csv("../bin/test2.csv");
-    if (file == NULL){
-        return 1;
-    }
-    Node *head = csv_to_linked_list(file);
-    printTable(head);
-    return 0;
-}
+// int main(){
+//     FILE *file = read_csv("../bin/test2.csv");
+//     if (file == NULL){
+//         return 1;
+//     }
+//     Node *head = csv_to_linked_list(file);
+//     printTable(head);
+//     return 0;
+// }
