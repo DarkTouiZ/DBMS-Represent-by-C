@@ -1,8 +1,5 @@
 // false/true :: This Column contain with String/Integer
-// #include <stdio.h>
-// #include <stdlib.h>
-// #include <conio.h>
-// #include "csv_io.c"
+#include "Header.c"
 
 // define a color value (ANSI)
 #define RED "\x1b[31m"
@@ -48,9 +45,8 @@ void GetDFS(Node *Initial_vertex_HEADER, Node *Terminal_vertex_HEADER, Node* wei
 
 struct Graph *graphCreation(Node *Initial_vertex_HEADER, Node *Terminal_vertex_HEADER, Node* weight_HEADER);
 struct Edge *getAllEdges(Node *Initial_vertex_HEADER, Node *Terminal_vertex_HEADER, Node* weight_HEADER, int size);
-struct Vertice *getAllVertices(Node *Initial_vertex_HEADER, Node *Terminal_vertex_HEADER);
+struct Vertice *getAllVertices(Node *Initial_vertex_HEADER, Node *Terminal_vertex_HEADER, int *size);
 bool isUnique(char* data, struct Vertice *unique_data_set, int unique_count);
-int getTotalSize_Vertices(struct Vertice *arr);
 int getTotalSize_Edges(Node *HEADER);
 struct Graph *InitIndex(struct Graph *graph);
 struct Graph *sortMINbyWeight(struct Graph *graph);
@@ -75,32 +71,32 @@ int Top(struct LinkedList** Head);
 
 
 
-// int main(){
-//     FILE *file = read_csv("../bin/test.csv");
-//     if (file == NULL)
-//     {
-//         return 1;
-//     }
+int main(){
+    FILE *file = read_csv("../bin/test.csv");
+    if (file == NULL)
+    {
+        return 1;
+    }
 
-//     Node *head = csv_to_linked_list(file);
+    Node *head = csv_to_linked_list(file);
 
-//     // case example
-//     Node *initial = head;
-//     Node *terminal = head->Next;
-//     Node *weight = terminal->Next;
-//     //debug
-//     // printf("%d %d\n", Size_edges, Size_vertices);
-//     // for(int i = 0; i< Size_vertices; i++){
-//     //     printf("%s ", VerticesArr[i].label);
-//     // }
+    // case example
+    Node *initial = head;
+    Node *terminal = head->Next;
+    Node *weight = terminal->Next;
+    //debug
+    // printf("%d %d\n", Size_edges, Size_vertices);
+    // for(int i = 0; i< Size_vertices; i++){
+    //     printf("%s ", VerticesArr[i].label);
+    // }
 
-//     //How to use
-//     GetShortestPathOF(initial, terminal, weight);
-//     GetBFS(initial, terminal, weight);
-//     GetDFS(initial, terminal, weight);
+    //How to use
+    GetShortestPathOF(initial, terminal, weight);
+    GetBFS(initial, terminal, weight);
+    GetDFS(initial, terminal, weight);
 
-//     return 0; 
-// }
+    return 0; 
+}
 
 void GetShortestPathOF(Node *Initial_vertex_HEADER, Node *Terminal_vertex_HEADER, Node* weight_HEADER){
     if(checkNULLin(Initial_vertex_HEADER) || checkNULLin(Terminal_vertex_HEADER) || checkNULLin(weight_HEADER)){
@@ -207,8 +203,7 @@ struct Graph *graphCreation(Node *Initial_vertex_HEADER, Node *Terminal_vertex_H
             }
 
             graph->E = vSize;
-            graph->vertice = getAllVertices(u, v);
-            graph->V = getTotalSize_Vertices(graph->vertice);
+            graph->vertice = getAllVertices(u, v, &graph->V);
             graph->edge = getAllEdges(u, v, weight, graph->E);
             graph = InitIndex(graph);
 
@@ -310,7 +305,7 @@ struct Graph *InitIndex(struct Graph *graph){
     return graph;
 }
 
-struct Vertice *getAllVertices(Node *Initial_vertex_HEADER, Node *Terminal_vertex_HEADER) {
+struct Vertice *getAllVertices(Node *Initial_vertex_HEADER, Node *Terminal_vertex_HEADER, int *size) {
     if (Initial_vertex_HEADER == NULL || Terminal_vertex_HEADER == NULL ) {
         printf(RED "Error : Memory allocation failed\n" RESET);
         return 0;
@@ -354,6 +349,7 @@ struct Vertice *getAllVertices(Node *Initial_vertex_HEADER, Node *Terminal_verte
         printf("%d. %s\n",unique_vertice[i].index , unique_vertice[i].label);
     }
 
+    *size = unique_count;
     return unique_vertice;
 }
 
@@ -365,15 +361,6 @@ bool isUnique(char* data, struct Vertice *unique_data_set, int unique_count) {
         }
     }
     return true; // Data is unique
-}
-
-int getTotalSize_Vertices(struct Vertice *arr){
-    int size = 0;
-    while (arr[size+1].index != 0) {
-        size++;
-    }
-    // shitf 0 index
-    return size+1;
 }
 
 int getTotalSize_Edges(Node *HEADER){
