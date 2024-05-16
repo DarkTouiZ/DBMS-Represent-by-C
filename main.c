@@ -18,7 +18,7 @@ int main()
         }
         else if (main_Page == false)
         {
-            system("cls");
+            // system("cls");
             printf("Please enter the command\n");
             printf("insert, delete, update, search, graph, exit\n");
             char *command = (char *)malloc(100 * sizeof(char));

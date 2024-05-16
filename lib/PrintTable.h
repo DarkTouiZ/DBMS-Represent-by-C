@@ -65,9 +65,13 @@ void printTable(Node *Table)
     FindSize(Table);
 
     // Begin Print Table Function
-    int num_display_rowNcol;
-    printf("How many rows and columns you want to display: ");
-    scanf(" %d", &num_display_rowNcol);
+    //  int num_display_rowNcol;
+    int num_display_row;
+    int num_display_col;
+    printf("How many cols you want to display: ");
+    scanf(" %d", &num_display_col);
+    printf("How many rows you want to display: ");
+    scanf(" %d", &num_display_row);
 
     // Initialize
     SimpleLikedList **Data = (SimpleLikedList **)malloc(sizeof(SimpleLikedList *) * max_size_col);
@@ -113,7 +117,7 @@ void printTable(Node *Table)
         printf("    ");
         for (int i = 0; i < max_size_col; i++)
         {
-            if (i >= curr_col && i < curr_col + num_display_rowNcol && i < max_size_col)
+            if (i >= curr_col && i < curr_col + num_display_col && i < max_size_col)
             {
                 printf("| %-12s ", Current_Column_Print->Data);
             }
@@ -122,12 +126,12 @@ void printTable(Node *Table)
         printf("|\n");
 
         // Print A Separete Line
-        for (int i = curr_row; i < curr_row + num_display_rowNcol && i < max_size_row; i++)
+        for (int i = curr_row; i < curr_row + num_display_row && i < max_size_row; i++)
         {
             if (i == curr_row)
             {
                 printf("----");
-                for (int j = 0; j < num_display_rowNcol; j++)
+                for (int j = 0; j < num_display_col; j++)
                 {
                     printf("+");
                     for (int k = 0; k < MAX_CELL_SIZE + 1; k++)
@@ -140,7 +144,7 @@ void printTable(Node *Table)
 
             // Print Record
             printf(" %-2d ", i + 1);
-            for (int j = curr_col; j < curr_col + num_display_rowNcol && j < max_size_col; j++)
+            for (int j = curr_col; j < curr_col + num_display_col && j < max_size_col; j++)
             {
                 printf("| %-12s ", Data[j][i].Data);
             }
@@ -151,7 +155,7 @@ void printTable(Node *Table)
         printf("Enter 'w' to move up, 'a' to move left, 's' to move down, 'd' to move right, 'e' to exit: ");
         scanf(" %c", &move_command);
 
-        if (move_command == 'd' && curr_col + num_display_rowNcol < max_size_col)
+        if (move_command == 'd' && curr_col + num_display_col < max_size_col)
         { // Right
             curr_col += move_setting;
         }
@@ -159,7 +163,7 @@ void printTable(Node *Table)
         { // Left
             curr_col -= move_setting;
         }
-        else if (move_command == 's' && curr_row + num_display_rowNcol < max_size_row)
+        else if (move_command == 's' && curr_row + num_display_row < max_size_row)
         { // Down
             curr_row += move_setting;
         }
@@ -188,9 +192,6 @@ void printTable(Node *Table)
 //         return 1;
 //     }
 //     Node *head = csv_to_linked_list(file);
-
-//     // FindSize(head);
 //     printTable(head);
-//     // freeLinkedList(head);
 //     return 0;
 // }
