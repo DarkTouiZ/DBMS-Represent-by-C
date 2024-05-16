@@ -9,3 +9,4 @@
 #include "graph_fn.h"
 #include "Indexing.h"
 #include "Insert.h"
+#include "Search.h"

@@ -27,6 +27,7 @@ typedef struct Tree{
     char Key[100]; // Key used for sorted in the Tree
     int Height;
     Adjacent_Node* Actual_Ptr; // Ptr to actual data in Database
+    int RowIndex; // Number of Record Above
     struct Tree* Left; // LeftChild
     struct Tree* Right; // RightChild
 }Tree;

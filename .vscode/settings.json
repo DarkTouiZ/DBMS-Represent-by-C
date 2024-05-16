@@ -3,6 +3,7 @@
     "structure.h": "c",
     "stdio.h": "c",
     "insert.h": "c",
-    "stdlib.h": "c"
+    "stdlib.h": "c",
+    "search.h": "c"
   }
 }
