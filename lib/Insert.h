@@ -1,5 +1,3 @@
-#include "Header.c"
-
 bool is_Integer(char* Str){
     if(*Str == '\0'){
         return false;
@@ -99,7 +97,7 @@ void InsertColumn(Node* First_Table_Head){
     // Create Table_Head_Node
     Node* new_Head_Node = (Node*)malloc(sizeof(Node));
     strcpy(new_Head_Node->Data, Temp);
-    new_Head_Node->Type = false;
+    new_Head_Node->Type = true;
     new_Head_Node->isIndexing = false;
     new_Head_Node->Indexing_Ptr = NULL;
     new_Head_Node->Next = NULL;
@@ -129,45 +127,45 @@ void InsertColumn(Node* First_Table_Head){
     InputLine[strcspn(InputLine, "\n")] = '\0';
 
     // Fill new Data for each Record
-    // Get First Token then do First Record
     char* Token = strtok(InputLine, " ");
-    Adjacent_Node* new_Adj_Node = CreateAdj_Node(Token);
-    
-    new_Head_Node->Adj_Head = new_Adj_Node; // Add to Head
-    new_Head_Node->Adj_Tail = new_Adj_Node;
-    new_Head_Node->Type = is_Integer(Token);
-
 
     while(Token != NULL){ // Add to Tail
         //Create new_Adj_Node
         Adjacent_Node* new_Adj_Node = CreateAdj_Node(Token);
 
-        new_Head_Node->Adj_Tail->Next = new_Adj_Node;
-        new_Adj_Node->Prev = (new_Head_Node->Adj_Tail);
-        new_Head_Node->Adj_Tail = new_Adj_Node;
+        if(new_Head_Node->Adj_Head == NULL){
+            new_Head_Node->Adj_Head = new_Adj_Node; // Add to Head
+            new_Head_Node->Adj_Tail = new_Adj_Node;
+        } else {
+            new_Head_Node->Adj_Tail->Next = new_Adj_Node;
+            new_Adj_Node->Prev = new_Head_Node->Adj_Tail;
+            new_Head_Node->Adj_Tail = new_Adj_Node;
+        }
+
+        if(!is_Integer(Token)){
+            new_Head_Node->Type = false;
+        }
 
         Token = strtok(NULL, " ");
     }
 }   
 
-int main()
-{
-    FILE *file = read_csv("../bin/test.csv");
-    if (file == NULL)
-    {
-        return 1;
-    }
+// Example of Usage
+// int main()
+// {
+//     FILE *file = read_csv("../bin/test.csv");
+//     if (file == NULL)
+//     {
+//         return 1;
+//     }
 
-    Node *First_Table_Head = csv_to_linked_list(file);
-    fclose(file);
+//     Node *First_Table_Head = csv_to_linked_list(file);
+//     fclose(file);
 
-    // InsertRecord(First_Table_Head);
-    InsertColumn(First_Table_Head);
+//     // InsertRecord(First_Table_Head);
+//     // InsertColumn(First_Table_Head);
 
-    linked_list_to_csv(First_Table_Head, "../bin/test_output.csv");
+//     // linked_list_to_csv(First_Table_Head, "../bin/test_output.csv");
 
-    printf("OK");
-
-
-    return 0;
-}
+//     return 0;
+// }
