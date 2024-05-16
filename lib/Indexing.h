@@ -1,7 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include "csv_io.c"
-
 // Function to compute maximum of two integers
 int max(int a, int b)
 {
@@ -57,33 +53,38 @@ int getBalance(Tree *N)
 }
 
 // Function to insert a new node into the AVL tree
-Tree *insertNode(Tree *root, Adjacent_Node *ptr)
+Tree *insertNode(Tree *root, Adjacent_Node *Actual_Ptr)
 {
+    // get value from Ptr
     char value[100];
-    strcpy(value, ptr->Data);
+    strcpy(value, Actual_Ptr->Data);
+
+    // Handle for NULL value in Data
+    if ((strcmp(value,"NaN") == 0))
+    {
+        return root;
+    }
+
+    // Insert Node in Tree
     if (!root)
     {
-        // root->Ptr = root;
+        // root->Actual_Ptr = root;
         Tree *newNode = (Tree *)malloc(sizeof(Tree));
         strcpy(newNode->Key, value); // Copy the string Key
         newNode->Left = newNode->Right = NULL;
         newNode->Height = 1;
-        newNode->Ptr = ptr;
+        newNode->Actual_Ptr = Actual_Ptr;
         return newNode;
     }
 
-    if ((strcmp(value,"NULL") == 0))
-    {
-        return root;
-    }
     int cmp = strcmp(value, root->Key);
     if (cmp < 0)
     {
-        root->Left = insertNode(root->Left, ptr);
+        root->Left = insertNode(root->Left, Actual_Ptr);
     }
     else if (cmp > 0)
     {
-        root->Right = insertNode(root->Right, ptr);
+        root->Right = insertNode(root->Right, Actual_Ptr);
     }
 
     // Update Height and balance the tree
@@ -167,43 +168,50 @@ void printTree(Tree *root)
     }
 }
 
-// Example usage
-int main()
-{
+Tree* CreateAVLTree(Adjacent_Node* Curr_Adj_Node){
+    Tree* AVLRoot = NULL;
 
-    FILE *file = read_csv("../bin/test.csv");
-    if (file == NULL)
+    while(Curr_Adj_Node != NULL)
     {
-        return 1;
+        AVLRoot = insertNode(AVLRoot, Curr_Adj_Node);
+        Curr_Adj_Node = Curr_Adj_Node->Next;
     }
-
-    Node *head = csv_to_linked_list(file);
-    fclose(file);
-
-    Tree *avlRoot = NULL;
-    Node *currNode = head;
-    Adjacent_Node *currAdjNode = currNode->Next->Next->Head;
-    while (currAdjNode)
-    {
-        avlRoot = insertNode(avlRoot, currAdjNode);
-        currAdjNode = currAdjNode->Next;
-    }
-
-    // Print the AVL tree
-    printf("In-order traversal of AVL tree %d:\n", avlRoot->Height);
-    printTree(avlRoot);
-
-    // search the AVL tree
-    const char *target = "Bengaluru";
-    Tree *result = searchNode(avlRoot, target);
-    if (result)
-    {
-        printf("\n'%s' found in the binary tree.", target);
-    }
-    else
-    {
-        printf("\n'%s' not found in the binary tree.", target);
-    }
-
-    return 0;
+    return AVLRoot;
 }
+
+// // Example usage
+// int main()
+// {
+
+//     FILE *file = read_csv("../bin/test.csv");
+//     if (file == NULL)
+//     {
+//         return 1;
+//     }
+
+//     Node *head = csv_to_linked_list(file);
+//     fclose(file);
+
+//     Node *currNode = head;
+//     Adjacent_Node *currAdjNode = currNode->Next->Next->Adj_Head;
+    
+//     Tree *avlRoot = CreateAVLTree(currAdjNode);
+
+//     // Print the AVL tree
+//     printf("In-order traversal of AVL tree %d:\n", avlRoot->Height);
+//     printTree(avlRoot);
+
+//     // search the AVL tree
+//     const char *target = "Bengaluru";
+//     Tree *result = searchNode(avlRoot, target);
+//     if (result)
+//     {
+//         printf("\n'%s' found in the binary tree.", target);
+//     }
+//     else
+//     {
+//         printf("\n'%s' not found in the binary tree.", target);
+//     }
+
+//     return 0;
+// }

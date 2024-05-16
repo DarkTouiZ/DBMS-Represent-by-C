@@ -1,11 +1,7 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
-#include "Structure.h"
-
-#define MAX_LINE_LENGTH 1000
+#define MAX_LINE_LENGTH MAX_STRING_LENGTH
 #define MAX_FIELD_LENGTH 100
+
+bool is_Integer(char* Str);
 
 // read csv function
 FILE *read_csv(char *filename)
@@ -34,7 +30,7 @@ FILE *read_csv(char *filename)
 Node *csv_to_linked_list(FILE *file) {
     char line[MAX_LINE_LENGTH];
     char *token;
-    Node *head = NULL;
+    Node *Adj_Head = NULL;
     Node *curr_node = NULL;
     Adjacent_Node *curr_adj_node = NULL;
     int row_count = 0;
@@ -44,7 +40,7 @@ Node *csv_to_linked_list(FILE *file) {
         line[strcspn(line, "\n")] = '\0';
 
         if (row_count == 0) {
-            // First row contains column headers
+            // First row contains column Adj_Headers
             token = strtok(line, ",");
             while (token != NULL) {
                 // printf("%s\n", token);
@@ -56,11 +52,11 @@ Node *csv_to_linked_list(FILE *file) {
                 new_node->Indexing_Ptr = NULL;
                 new_node->Next = NULL;
                 new_node->Prev = curr_node;
-                new_node->Head = NULL;
-                new_node->Tail = NULL;
+                new_node->Adj_Head = NULL;
+                new_node->Adj_Tail = NULL;
 
-                if (head == NULL) {
-                    head = new_node;
+                if (Adj_Head == NULL) {
+                    Adj_Head = new_node;
                 } else {
                     curr_node->Next = new_node;
                 }
@@ -69,7 +65,7 @@ Node *csv_to_linked_list(FILE *file) {
             }
         } else {
             // Subsequent rows contain data
-            curr_node = head;
+            curr_node = Adj_Head;
             // printf("curr_node->Data: %s\n", curr_node->Data);
             token = strtok(line, ",");
             while (token != NULL && curr_node != NULL) {
@@ -79,17 +75,17 @@ Node *csv_to_linked_list(FILE *file) {
                 new_adj_node->Next = NULL;
                 new_adj_node->Prev = curr_adj_node;
 
-                if (curr_node->Head == NULL) {
-                    curr_node->Head = new_adj_node;
-                } else {
-                    curr_node->Tail->Next = new_adj_node;
+                if (curr_node->Adj_Head == NULL) { // Handle First Data is NULL
+                    curr_node->Adj_Head = new_adj_node;
+                } else { // case default :: add to Tail
+                    curr_node->Adj_Tail->Next = new_adj_node;
                 }
-                curr_node->Tail = new_adj_node;      
+                curr_node->Adj_Tail = new_adj_node;      
                 curr_adj_node = new_adj_node;
 
                 // Check if the data is an integer
-                if (!curr_node->Type && atoi(token) != 0) {
-                    curr_node->Type = true;
+                if (!curr_node->Type && is_Integer(token)) {
+                    curr_node->Type = true; // Type true = Integer
                 }
 
                 curr_node = curr_node->Next;
@@ -99,16 +95,16 @@ Node *csv_to_linked_list(FILE *file) {
         row_count++;
     }
 
-    return head;
+    return Adj_Head;
 }
 
 // display linked list function
-void display_linked_list(Node *head) {
-    Node *curr_node = head;
+void display_linked_list(Node *Adj_Head) {
+    Node *curr_node = Adj_Head;
     Adjacent_Node *curr_adj_node = NULL;
     while (curr_node != NULL) {
         printf("%s\n", curr_node->Data);
-        curr_adj_node = curr_node->Head;
+        curr_adj_node = curr_node->Adj_Head;
         while (curr_adj_node != NULL) {
             printf("%s\n", curr_adj_node->Data);
             curr_adj_node = curr_adj_node->Next;
@@ -118,17 +114,17 @@ void display_linked_list(Node *head) {
 }
 
 // save linked list to csv function
-void linked_list_to_csv(Node *head, char *filename) {
+void linked_list_to_csv(Node *Adj_Head, char *filename) {
     FILE *file = fopen(filename, "w");
     if (file == NULL) {
         printf("Failed to open the file.\n");
         return;
     }
 
-    Node *curr_node = head;
+    Node *curr_node = Adj_Head;
     Adjacent_Node *curr_adj_node = NULL;
 
-    // Write column headers
+    // Write column Adj_Headers
     while (curr_node != NULL) {
         if (curr_node->Prev != NULL) {
             fprintf(file, ",");
@@ -143,22 +139,22 @@ void linked_list_to_csv(Node *head, char *filename) {
 
     // get row number
     int row_number = 0;
-    curr_node = head;
-    curr_adj_node = curr_node->Head;
+    curr_node = Adj_Head;
+    curr_adj_node = curr_node->Adj_Head;
     while (curr_adj_node != NULL) {
         row_number++;
         curr_adj_node = curr_adj_node->Next;
     }
 
     // Write all rows
-    curr_node = head;
+    curr_node = Adj_Head;
     int column_count = 0;
     int row_count = 0;
 
     while (row_count < row_number) {
-        curr_node = head;
+        curr_node = Adj_Head;
         while (curr_node != NULL) {
-            curr_adj_node = curr_node->Head;
+            curr_adj_node = curr_node->Adj_Head;
 
             // Move to the current row
             for (int i = 0; i < row_count; i++) {
@@ -181,8 +177,8 @@ void linked_list_to_csv(Node *head, char *filename) {
 }
 
 // print type each column
-void check_type(Node *head) {
-    Node *curr_node = head;
+void check_type(Node *Adj_Head) {
+    Node *curr_node = Adj_Head;
     while (curr_node != NULL) {
         if (curr_node->Type) {
             printf("%s\n: Integer\n", curr_node->Data);
@@ -202,11 +198,11 @@ void check_type(Node *head) {
 //         return 1;
 //     }
 
-//     Node *head = csv_to_linked_list(file);
-//     display_linked_list(head);
-//     // check_type(head);
+//     Node *Adj_Head = csv_to_linked_list(file);
+//     display_linked_list(Adj_Head);
+//     // check_type(Adj_Head);
 
-//     // linked_list_to_csv(head, "../bin/test_output.csv");
+//     // linked_list_to_csv(Adj_Head, "../bin/test_output.csv");
 
 //     fclose(file);
 

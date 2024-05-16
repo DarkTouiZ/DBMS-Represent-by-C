@@ -1,16 +1,16 @@
 // false/true :: This Column contain with String/Integer
-#include <stdio.h>
-#include <stdlib.h>
-#include <conio.h>
-#include "csv_io.c"
+// #include <stdio.h>
+// #include <stdlib.h>
+// #include <conio.h>
+// #include "csv_io.c"
 
 // define a color value (ANSI)
 #define RED "\x1b[31m"
 #define GREEN "\x1b[32m"
 #define RESET "\x1b[0m"
 
-#define MAX 100
-#define MAX_VERTICES 1000
+#define MAX MAX_STRING_LENGTH
+#define MAX_VERTICES 10000
 #define INFINITY 999999
 
 //struct for linked list used in BFS & DFS
@@ -75,32 +75,32 @@ int Top(struct LinkedList** Head);
 
 
 
-int main(){
-    FILE *file = read_csv("../bin/test.csv");
-    if (file == NULL)
-    {
-        return 1;
-    }
+// int main(){
+//     FILE *file = read_csv("../bin/test.csv");
+//     if (file == NULL)
+//     {
+//         return 1;
+//     }
 
-    Node *head = csv_to_linked_list(file);
+//     Node *head = csv_to_linked_list(file);
 
-    // case example
-    Node *initial = head;
-    Node *terminal = head->Next;
-    Node *weight = terminal->Next;
-    //debug
-    // printf("%d %d\n", Size_edges, Size_vertices);
-    // for(int i = 0; i< Size_vertices; i++){
-    //     printf("%s ", VerticesArr[i].label);
-    // }
+//     // case example
+//     Node *initial = head;
+//     Node *terminal = head->Next;
+//     Node *weight = terminal->Next;
+//     //debug
+//     // printf("%d %d\n", Size_edges, Size_vertices);
+//     // for(int i = 0; i< Size_vertices; i++){
+//     //     printf("%s ", VerticesArr[i].label);
+//     // }
 
-    //How to use
-    GetShortestPathOF(initial, terminal, weight);
-    GetBFS(initial, terminal, weight);
-    GetDFS(initial, terminal, weight);
+//     //How to use
+//     GetShortestPathOF(initial, terminal, weight);
+//     GetBFS(initial, terminal, weight);
+//     GetDFS(initial, terminal, weight);
 
-    return 0; 
-}
+//     return 0; 
+// }
 
 void GetShortestPathOF(Node *Initial_vertex_HEADER, Node *Terminal_vertex_HEADER, Node* weight_HEADER){
     if(checkNULLin(Initial_vertex_HEADER) || checkNULLin(Terminal_vertex_HEADER) || checkNULLin(weight_HEADER)){
@@ -273,9 +273,9 @@ struct Edge *getAllEdges(Node *Initial_vertex_HEADER, Node *Terminal_vertex_HEAD
     }
 
     Adjacent_Node *u_adj, *v_adj, *w_adj;
-    u_adj = Initial_vertex_HEADER->Head;
-    v_adj = Terminal_vertex_HEADER->Head;
-    w_adj = weight_HEADER->Head;
+    u_adj = Initial_vertex_HEADER->Adj_Head;
+    v_adj = Terminal_vertex_HEADER->Adj_Head;
+    w_adj = weight_HEADER->Adj_Head;
 
     int i = 0;
     while(u_adj != NULL && v_adj != NULL && w_adj != NULL) {
@@ -326,7 +326,7 @@ struct Vertice *getAllVertices(Node *Initial_vertex_HEADER, Node *Terminal_verte
     }
 
     // Traverse the first linked list
-    curr_adj_node = Initial_vertex_HEADER->Head;
+    curr_adj_node = Initial_vertex_HEADER->Adj_Head;
     while (curr_adj_node != NULL) {
         if (isUnique(curr_adj_node->Data, unique_vertice, unique_count)) {
             strcpy(unique_vertice[unique_count].label, curr_adj_node->Data);
@@ -337,7 +337,7 @@ struct Vertice *getAllVertices(Node *Initial_vertex_HEADER, Node *Terminal_verte
     }
 
     // Traverse the second linked list
-    curr_adj_node = Terminal_vertex_HEADER->Head;
+    curr_adj_node = Terminal_vertex_HEADER->Adj_Head;
     while (curr_adj_node != NULL) {
         if (isUnique(curr_adj_node->Data, unique_vertice, unique_count)) {
             strcpy(unique_vertice[unique_count].label, curr_adj_node->Data);
@@ -386,7 +386,7 @@ int getTotalSize_Edges(Node *HEADER){
     int size = 0;
 
     // Traverse the adjacency list
-    Adjacent_Node *curr_adj_node = HEADER->Head;
+    Adjacent_Node *curr_adj_node = HEADER->Adj_Head;
     while (curr_adj_node != NULL) {
         size++;
         curr_adj_node = curr_adj_node->Next;
@@ -403,7 +403,7 @@ bool checkNULLin(Node *HEADER) {
     }
 
     // Traverse the adjacency list
-    Adjacent_Node *curr_adj_node = HEADER->Head;
+    Adjacent_Node *curr_adj_node = HEADER->Adj_Head;
     while (curr_adj_node != NULL) {
         if(!strcmp(curr_adj_node->Data, "NULL")){
             return true;
