@@ -3,9 +3,10 @@
 int main()
 {
     printf("Welcome to the Database Program\n");
-    printf("please enter the name of new table or open an exist table with the name of file\n");
+    printf("please enter file path or enter filename to create new\n");
     char *Table_name = (char *)malloc(100 * sizeof(char));
-    scanf(" %s", Table_name);
+    // scanf(" %s", Table_name);
+    strcpy(Table_name,"bin/test.csv");
     FILE *file = read_csv(Table_name);
     Node *First_Table_Head = csv_to_linked_list(file);
     fclose(file);
@@ -30,6 +31,7 @@ int main()
                 printf("2. Insert Column\n");
                 int choice;
                 scanf(" %d", &choice);
+                while (getchar() != '\n');
                 if (choice == 1)
                 {
                     InsertRecord(First_Table_Head);
@@ -56,139 +58,39 @@ int main()
                     printf("What is the row number you want to delete: ");
                     int RowIndex;
                     scanf(" %d", &RowIndex);
-                    printf("\n");
                     DeleteRow(First_Table_Head, RowIndex);
                 }
                 else if (choice == 2)
                 {
                     printf("What is the column name you want to delete: ");
-                    char *ColumnName;
+                    char ColumnName[MAX_STRING_LENGTH];
                     scanf(" %s", ColumnName);
-                    printf("\n");
                     DeleteColumn(First_Table_Head, ColumnName);
                 }
                 else if (choice == 3)
                 {
                     printf("What is the row number & the column name you want to delete: ");
                     int RowIndex;
-                    char *ColumnName;
+                    char ColumnName[MAX_STRING_LENGTH];
                     scanf("%d %s", &RowIndex, ColumnName);
-                    printf("\n");
                     DeleteDataAt(First_Table_Head, RowIndex, ColumnName);
                 }
                 else
                 {
                     printf("Invalid choice\n");
                 }
-            }
-            else if (strcmp(command, "update") == 0)
+            }else if (strcmp(command, "update") == 0)
             {
-                printf("enter the row number and the column name you want to update\n");
+                printf("enter the row number and the column name you want to update: ");
                 int row;
-                char *column;
+                char column[MAX_STRING_LENGTH];
                 scanf(" %d %s", &row, column);
-                printf("enter the new data\n");
+                printf("enter the new data: ");
                 char *NewData = (char *)malloc(100 * sizeof(char));
+                scanf(" %s", NewData);
                 SelectToChangeAt(First_Table_Head, row, column, NewData);
-            }
-            else if (strcmp(command, "search") == 0)
-            {
-                printf("What kind of search do you want?\n");
-                printf("1. Search for row number\n");
-                printf("2. Search for record\n");
-                printf("3. Make indexing\n");
-                int choice;
-                scanf(" %d", &choice);
-                if (choice == 1)
-                {
-                    printf("What is the column name you want to search: ");
-                    char *ColumnName;
-                    scanf(" %s", ColumnName);
-                    printf("\n");
-
-                    Node *Curr = First_Table_Head;
-                    while (Curr != NULL)
-                    {
-                        if (strcmp(Curr->Data, ColumnName) == 0)
-                        {
-                            break;
-                        }
-                        Curr = Curr->Next;
-                    }
-                    if (Curr == NULL)
-                    {
-                        printf("Column name not match any in database\n");
-                    }
-                    else
-                    {
-                        printf("What is the target do you search for: ");
-                        char *Target;
-                        scanf(" %s", Target);
-                        printf("\n");
-                        printf("Row number of %s in column %s is %d", Target, ColumnName, GetPosition(Curr, Target));
-                    }
-                }
-                else if (choice == 2)
-                {
-                    printf("What is the column name You want to search: ");
-                    char *ColumnName;
-                    scanf(" %s", ColumnName);
-                    printf("\n");
-
-                    Node *Curr = First_Table_Head;
-                    while (Curr != NULL)
-                    {
-                        if (strcmp(Curr->Data, ColumnName) == 0)
-                        {
-                            break;
-                        }
-                        Curr = Curr->Next;
-                    }
-                    if (Curr == NULL)
-                    {
-                        printf("Column name not match any in database\n");
-                    }
-                    else
-                    {
-                        printf("What is the target do you search for: ");
-                        char *Target;
-                        scanf(" %s", Target);
-                        printf("\n");
-                        int *ReturnIndex;
-                        Adjacent_Node *Actual_Data = Search_Adj_Node(Curr, Target, ReturnIndex);
-                        PrintRecord_by_Ref(Actual_Data, 5);
-                    }
-                }
-                else if (choice == 3)
-                {
-                    printf("what is column name do you want to make indexing: ");
-                    char *ColumnName;
-                    scanf(" %s", ColumnName);
-                    printf("\n");
-                    Node *Curr = First_Table_Head;
-                    while (Curr != NULL)
-                    {
-                        if (strcmp(Curr->Data, ColumnName) == 0)
-                        {
-                            break;
-                        }
-                        Curr = Curr->Next;
-                    }
-                    if (Curr == NULL)
-                    {
-                        printf("Column name not match any in database\n");
-                    }
-                    else
-                    {
-                        MakeIndexing(Curr);
-                    }
-                }
-                else
-                {
-                    printf("Invalid choice\n");
-                }
-            }
-            else if (strcmp(command, "graph") == 0)
+                free(NewData);
+            }else if (strcmp(command, "graph") == 0)
             {
                 printf("plase enter the column name follow these requirements\n");
                 printf("initial vertex column name: ");
@@ -271,17 +173,10 @@ int main()
                     }
                 }
             }
-            else if (strcmp(command, "exit") == 0)
-            {
-                linked_list_to_csv(First_Table_Head, "../bin/test_output.csv");
-                fclose(file);
-                break;
-            }
-            else
-            {
-                printf("Invalid command\n");
-            }
+
+            break;
         }
     }
+    
     return 0;
 }

@@ -27,18 +27,17 @@ void InsertRecord(Node* First_Table_Head){
     Node* Curr_Table_Head = First_Table_Head;
 
     // Print Text
-    printf("Input Data Seperated by space\nColumn Name: ");
-    Node* Temp = Curr_Table_Head;
-    while(Temp != NULL){
-        printf("%s ", Temp->Data);
-        Temp = Temp->Next;
-    }
-    printf("\n");
+    printf("Input Data Seperated by space\n");
+    // Node* Temp = Curr_Table_Head;
+    // while(Temp != NULL){
+    //     printf(" %s", Temp->Data);
+    //     Temp = Temp->Next;
+    // }
+    // printf("\n");
 
     // Get Input
     char InputLine[MAX_STRING_LENGTH];
     fgets(InputLine, MAX_STRING_LENGTH, stdin);
-
     // Remove the newline character if present
     InputLine[strcspn(InputLine, "\n")] = '\0';
 
@@ -202,6 +201,8 @@ void InsertColumn(Node* First_Table_Head){
             new_Head_Node->Type = false;
         }
     }
+
+    return;
 }
 
 // Example of Usage
