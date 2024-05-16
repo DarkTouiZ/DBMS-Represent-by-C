@@ -53,10 +53,46 @@ int GetPosition(Node* Column_Head, char* Target){
 }
 
 // Usage the Return to print that Record
+<<<<<<< Updated upstream
 void PrintRecord(Node* First_Coulmn_Head, int RowIndex){
     Node* Curr_Column_Head = First_Coulmn_Head;
     while (Curr_Column_Head != NULL){
         Adjacent_Node* Curr_Adjacent_Node = Curr_Column_Head->Adj_Head;
+=======
+void PrintRecord_by_Ref(Adjacent_Node *Ref_Node, int Num)
+{
+    Adjacent_Node *Curr = Ref_Node;
+    for (int i = 0; i < Num; i++)
+    { // Back to Top
+        if (Curr->Prev != NULL)
+        {
+            Curr = Curr->Prev;
+        }
+    }
+    while (Curr->Left != NULL)
+    { // Back to Left
+        Curr = Curr->Left;
+    }
+    for (int i = 0; i < (Num * 2) + 1; i++)
+    {
+        Adjacent_Node *Curr_Temp = Curr;
+        while (Curr_Temp != NULL)
+        {
+            printf("| %-12s ", Curr_Temp->Data);
+            Curr_Temp = Curr_Temp->Right;
+        }
+        printf("\n");
+        Curr = Curr->Next;
+    }
+}
+
+void PrintRecord_by_Index(Node *First_Coulmn_Head, int RowIndex)
+{
+    Node *Curr_Column_Head = First_Coulmn_Head;
+    while (Curr_Column_Head != NULL)
+    {
+        Adjacent_Node *Curr_Adjacent_Node = Curr_Column_Head->Adj_Head;
+>>>>>>> Stashed changes
         int CountIndex = 0;
         while(CountIndex != RowIndex){
             Curr_Adjacent_Node = Curr_Adjacent_Node->Next;
