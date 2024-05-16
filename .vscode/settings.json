@@ -1,6 +1,8 @@
 {
   "files.associations": {
     "structure.h": "c",
-    "stdio.h": "c"
+    "stdio.h": "c",
+    "insert.h": "c",
+    "stdlib.h": "c"
   }
 }

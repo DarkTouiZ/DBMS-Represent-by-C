@@ -8,6 +8,4 @@
 #include "csv_io.h"
 #include "graph_fn.h"
 #include "Indexing.h"
-#include "Query_Execution.h"
-#include "Delete_fn.c"
-#include "SelectToChange.c"
+#include "Insert.h"
