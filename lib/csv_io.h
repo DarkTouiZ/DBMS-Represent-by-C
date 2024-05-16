@@ -9,8 +9,25 @@ FILE *read_csv(char *filename)
     FILE *file = fopen(filename, "r");
     if (file == NULL)
     {
-        printf("Failed to open the file.\n");
-        return NULL;
+        printf("The file is not exist\n");
+        printf("Do you want to create a new table with this name? (y/n)\n");
+        char c;
+        scanf(" %c", &c);
+        if (c == 'y')
+        {
+            file = fopen(filename, "w");
+            if (file == NULL)
+            {
+                printf("Failed to open the file.\n");
+                return 0;
+            }
+            printf("The table is created successfully\n");
+        }
+        else
+        {
+            printf("Goodbye\n");
+            return 0;
+        }
     }
     // Check if the file has a .csv extension
     char *extension = strrchr(filename, '.');
