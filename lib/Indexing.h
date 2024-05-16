@@ -17,14 +17,14 @@ int getHeight(Tree *node)
 // Right rotate
 Tree *RightRotate(struct Tree *y)
 {
-    Tree *x = y->Left;
-    Tree *T2 = x->Right;
+    Tree *x = y->LeftChild;
+    Tree *T2 = x->RightChild;
 
-    x->Right = y;
-    y->Left = T2;
+    x->RightChild = y;
+    y->LeftChild = T2;
 
-    y->Height = max(getHeight(y->Left), getHeight(y->Right)) + 1;
-    x->Height = max(getHeight(x->Left), getHeight(x->Right)) + 1;
+    y->Height = max(getHeight(y->LeftChild), getHeight(y->RightChild)) + 1;
+    x->Height = max(getHeight(x->LeftChild), getHeight(x->RightChild)) + 1;
 
     return x;
 }
@@ -32,14 +32,14 @@ Tree *RightRotate(struct Tree *y)
 // Left rotate
 Tree *LeftRotate(Tree *x)
 {
-    Tree *y = x->Right;
-    Tree *T2 = y->Left;
+    Tree *y = x->RightChild;
+    Tree *T2 = y->LeftChild;
 
-    y->Left = x;
-    x->Right = T2;
+    y->LeftChild = x;
+    x->RightChild = T2;
 
-    x->Height = max(getHeight(x->Left), getHeight(x->Right)) + 1;
-    y->Height = max(getHeight(y->Left), getHeight(y->Right)) + 1;
+    x->Height = max(getHeight(x->LeftChild), getHeight(x->RightChild)) + 1;
+    y->Height = max(getHeight(y->LeftChild), getHeight(y->RightChild)) + 1;
 
     return y;
 }
@@ -49,7 +49,7 @@ int getBalance(Tree *N)
 {
     if (N == NULL)
         return 0;
-    return getHeight(N->Left) - getHeight(N->Right);
+    return getHeight(N->LeftChild) - getHeight(N->RightChild);
 }
 
 // Function to insert a new node into the AVL tree
@@ -75,7 +75,7 @@ Tree *insertNode(Tree *root, Adjacent_Node *Actual_Ptr, int Count)
         }
 
         strcpy(newNode->Key, value); // Copy the string Key
-        newNode->Left = newNode->Right = NULL;
+        newNode->LeftChild = newNode->RightChild = NULL;
         newNode->Height = 1;
         newNode->Actual_Ptr = Actual_Ptr;
         newNode->RowIndex = Count;
@@ -85,15 +85,15 @@ Tree *insertNode(Tree *root, Adjacent_Node *Actual_Ptr, int Count)
     int cmp = strcmp(value, root->Key);
     if (cmp < 0)
     {
-        root->Left = insertNode(root->Left, Actual_Ptr, Count);
+        root->LeftChild = insertNode(root->LeftChild, Actual_Ptr, Count);
     }
     else if (cmp > 0)
     {
-        root->Right = insertNode(root->Right, Actual_Ptr, Count);
+        root->RightChild = insertNode(root->RightChild, Actual_Ptr, Count);
     }
 
     // Update Height and balance the tree
-    root->Height = 1 + max(getHeight(root->Left), getHeight(root->Right));
+    root->Height = 1 + max(getHeight(root->LeftChild), getHeight(root->RightChild));
     // Perform AVL balancing (rotation) if needed
     int balance = getBalance(root);
     if (balance > 1 && cmp < 0)
@@ -104,13 +104,13 @@ Tree *insertNode(Tree *root, Adjacent_Node *Actual_Ptr, int Count)
 
     if (balance > 1 && cmp < 0)
     {
-        root->Left = LeftRotate(root->Left);
+        root->LeftChild = LeftRotate(root->LeftChild);
         return RightRotate(root);
     }
 
     if (balance < -1 && cmp > 0)
     {
-        root->Right = RightRotate(root->Right);
+        root->RightChild = RightRotate(root->RightChild);
         return LeftRotate(root);
     }
     return root;
@@ -121,9 +121,9 @@ void printTree(Tree *root)
 {
     if (root)
     {
-        printTree(root->Left);
+        printTree(root->LeftChild);
         printf("%s ", root->Key);
-        printTree(root->Right);
+        printTree(root->RightChild);
     }
 }
 

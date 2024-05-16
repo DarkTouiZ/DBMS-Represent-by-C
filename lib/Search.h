@@ -1,5 +1,3 @@
-// #include "Header.c"
-
 Node* MakeIndexing(Node* Table_Head){
     Tree* Root = CreateAVLTree(Table_Head->Adj_Head);
     
@@ -23,9 +21,9 @@ Tree *Search_Tree_Node(Tree* Root, char* Target){
     if(Cmp == 0){
         return Root;
     } else if(Cmp < 0){
-        return Search_Tree_Node(Root->Left, Target);
+        return Search_Tree_Node(Root->LeftChild, Target);
     } else {
-        return Search_Tree_Node(Root->Right, Target);
+        return Search_Tree_Node(Root->RightChild, Target);
     }
 }
 

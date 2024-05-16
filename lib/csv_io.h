@@ -2,6 +2,23 @@
 #define MAX_FIELD_LENGTH 100
 
 bool is_Integer(char* Str);
+void Linked_Left_Right(Node* First_Head_Table){
+    Adjacent_Node* Data_PreCurr = NULL;
+    Node* Head_Table_Curr = First_Head_Table;
+    while(Head_Table_Curr != NULL){ // Loop for each in Column
+        Adjacent_Node* Head_Adj_Node = Head_Table_Curr->Adj_Head;
+        while(Head_Adj_Node != NULL){ // Loop for each in Record
+            Head_Adj_Node->Left = Data_PreCurr; // Update Left Pointer
+            if(Data_PreCurr != NULL){
+                Data_PreCurr->Right = Head_Adj_Node;// Update Right Pointer
+                Data_PreCurr = Data_PreCurr->Next;
+            }
+            Head_Adj_Node = Head_Adj_Node->Next;
+        }
+        Data_PreCurr = Head_Table_Curr->Adj_Head;
+        Head_Table_Curr = Head_Table_Curr->Next;
+    }
+}
 
 // read csv function
 FILE *read_csv(char *filename)
@@ -91,6 +108,8 @@ Node *csv_to_linked_list(FILE *file) {
                 strcpy(new_adj_node->Data, token);
                 new_adj_node->Next = NULL;
                 new_adj_node->Prev = curr_adj_node;
+                new_adj_node->Left = NULL;
+                new_adj_node->Right = NULL;
 
                 if (curr_node->Adj_Head == NULL) { // Handle First Data is NULL
                     curr_node->Adj_Head = new_adj_node;
@@ -112,6 +131,7 @@ Node *csv_to_linked_list(FILE *file) {
         row_count++;
     }
 
+    Linked_Left_Right(Adj_Head); // Linked Left and Right Node for each Data
     return Adj_Head;
 }
 

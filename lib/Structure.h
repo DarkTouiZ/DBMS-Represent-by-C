@@ -21,6 +21,8 @@ typedef struct Linked{
     char Data[MAX_STRING_LENGTH]; // Data in Row
     struct Linked* Next; // Next Row
     struct Linked* Prev; // Prev Row
+    struct Linked* Left; // Left Column
+    struct Linked* Right; // Right Column
 } Adjacent_Node;
 
 typedef struct Tree{
@@ -28,6 +30,6 @@ typedef struct Tree{
     int Height;
     Adjacent_Node* Actual_Ptr; // Ptr to actual data in Database
     int RowIndex; // Number of Record Above
-    struct Tree* Left; // LeftChild
-    struct Tree* Right; // RightChild
+    struct Tree* LeftChild; // Left Child Node
+    struct Tree* RightChild; // Right Child Node
 }Tree;

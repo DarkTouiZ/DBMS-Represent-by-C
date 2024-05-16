@@ -18,6 +18,8 @@ Adjacent_Node* CreateAdj_Node(char* Token){
     strcpy(newNode->Data, Token);
     newNode->Next = NULL;
     newNode->Prev = NULL;
+    newNode->Left = NULL;
+    newNode->Right = NULL;
     return newNode;
 }
 
@@ -43,6 +45,7 @@ void InsertRecord(Node* First_Table_Head){
     // Extract Input line
     // Get First Token
     char* Token = strtok(InputLine, " ");
+    Adjacent_Node* PreCurr_Data = NULL; // Store PreCurr Node
     while(Token != NULL){
         
         Adjacent_Node* Curr_Adj_Node = Curr_Table_Head->Adj_Head;
@@ -53,6 +56,10 @@ void InsertRecord(Node* First_Table_Head){
         // Handle First Record
         if(Curr_Table_Head->Adj_Head == NULL){
             Curr_Table_Head->Adj_Head = newNode;
+            newNode->Left = PreCurr_Data;
+            if(PreCurr_Data != NULL){
+                PreCurr_Data->Right = newNode;// Update Right Pointer of Left Node
+            }
             Curr_Table_Head->Type = is_Integer(Token);
         } else { // Default Case : Add to Tail
             while(is_Integer(Token) != Curr_Table_Head->Type){ // Loop until get match Data Type
@@ -75,12 +82,18 @@ void InsertRecord(Node* First_Table_Head){
                 strcpy(newNode->Data, Token);
             }
             Curr_Table_Head->Adj_Tail->Next = newNode;
+            newNode->Left = PreCurr_Data;
+            if(PreCurr_Data != NULL){
+                PreCurr_Data->Right = newNode;// Update Right Pointer
+            }
             newNode->Prev = Curr_Table_Head->Adj_Tail;
         }
+        // printf("A");
 
         //Undate Tail_Pointer
         Curr_Table_Head->Adj_Tail = newNode;
 
+        PreCurr_Data = newNode; // Move PreCurr Node to new Column
         Curr_Table_Head = Curr_Table_Head->Next;
         Token = strtok(NULL, " ");
         // printf("%s\n", Token);
