@@ -11,7 +11,7 @@ Bengaluru,Hyderabad,576
 Bengaluru,Chennai,346
 Bengaluru,Goa,562
 Bhubaneswar,Kolkata,442
-Bhubaneswar,Vishakha,444
+Bhubaneswar,Vishakhapatnam,444
 Bhubaneswar,Patna,831
 Chennai,Hyderabad,626
 Chennai,Bengaluru,345
@@ -29,7 +29,7 @@ Goa,Hyderabad,674
 Goa,Kochi,755
 Goa,Mumbai,585
 Goa,Pune,442
-Goa,Thiruvana,1305
+Goa,Thiruvananthapuram,1305
 Hyderabad,Pune,562
 Hyderabad,Bengaluru,576
 Hyderabad,Chennai,627
@@ -48,7 +48,7 @@ Kanpur,Varanasi,328
 Kochi,Chennai,690
 Kochi,Bengaluru,547
 Kochi,Goa,754
-Kochi,Thiruvana,206
+Kochi,Thiruvananthapuram,206
 Kochi,Bengaluru,547
 Kolkata,Varanasi,680
 Kolkata,Patna,554
@@ -71,8 +71,8 @@ Pune,Mumbai,150
 Pune,Ahmedabad,660
 Pune,Hyderabad,560
 Pune,Bengaluru,842
-Thiruvana,Kochi,206
-Thiruvana,Goa,1305
+Thiruvananthapuram,Kochi,206
+Thiruvananthapuram,Goa,1305
 Udaipur,Ahmedabad,257
 Udaipur,Jaipur,397
 Udaipur,Mumbai,767
@@ -81,5 +81,5 @@ Varanasi,Kanpur,328
 Varanasi,Patna,259
 Varanasi,Kolkata,683
 Varanasi,Lucknow,312
-Vishakha,Bhubaneswar,441
-Vishakha,Hyderabad,618
+Vishakhapatnam,Bhubaneswar,441
+Vishakhapatnam,Hyderabad,618
