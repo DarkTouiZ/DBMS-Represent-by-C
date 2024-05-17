@@ -1,6 +1,12 @@
 #define MAX_LINE_LENGTH MAX_STRING_LENGTH
 #define MAX_FIELD_LENGTH 100
 
+// Define ANSI escape codes for styling
+#define RESET "\x1b[0m"
+#define RED "\x1b[31m"
+#define GREEN "\x1b[32m"
+#define MAGENTA "\x1b[35m"
+
 bool is_Integer(char* Str);
 void Linked_Left_Right(Node* First_Head_Table){
     Adjacent_Node* Data_PreCurr = NULL;
@@ -43,7 +49,7 @@ FILE *read_csv(char *filename)
     FILE *file = fopen(filename, "r");
     if (file == NULL)
     {
-        printf("The file is not exist\n");
+        printf(RED "The file is not exist\n\n" RESET);
         printf("Do you want to create a new table with this name? (y/n)\n");
         char c;
         scanf(" %c", &c);
@@ -52,14 +58,14 @@ FILE *read_csv(char *filename)
             file = fopen(filename, "w");
             if (file == NULL)
             {
-                printf("Failed to open the file.\n");
+                printf(RED "Failed to open the file.\n"RESET);
                 return 0;
             }
-            printf("The table is created successfully\n");
+            printf(GREEN "FILE created successfully\n" RESET);
         }
         else
         {
-            printf("Goodbye\n");
+            printf(GREEN "\nGoodbye...\n" RESET);
             exit(0);
         }
     }
@@ -71,8 +77,9 @@ FILE *read_csv(char *filename)
     }
     else
     {
-        printf("File format not supported. Only .csv files are supported.\n");
+        printf(RED "File format not supported. Only .csv files are supported.\n" RESET);
         fclose(file);
+        exit(0);
         return NULL;
     }
 }
@@ -172,7 +179,7 @@ void display_linked_list(Node *Adj_Head) {
 void linked_list_to_csv(Node *Adj_Head, char *filename) {
     FILE *file = fopen(filename, "w");
     if (file == NULL) {
-        printf("Failed to open the file.\n");
+        printf(RED "Failed to open the file.\n" RESET);
         return;
     }
 
@@ -236,9 +243,9 @@ void check_type(Node *Adj_Head) {
     Node *curr_node = Adj_Head;
     while (curr_node != NULL) {
         if (curr_node->Type) {
-            printf("%s\n: Integer\n", curr_node->Data);
+            printf(MAGENTA "%s\n: Integer\n" RESET, curr_node->Data);
         } else {
-            printf("%s\n: String\n", curr_node->Data);
+            printf(MAGENTA "%s\n: String\n" RESET, curr_node->Data);
         }
         curr_node = curr_node->Next;
     }
