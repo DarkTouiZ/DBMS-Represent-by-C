@@ -101,7 +101,7 @@ void PrintRecord_by_Ref(Adjacent_Node *Ref_Node, int Num)
         Adjacent_Node *Curr_Temp = Curr;
         while (Curr_Temp != NULL)
         {
-            printf("| %-12s ", Curr_Temp->Data);
+            printf(CYAN "|%s %-12s ", RESET, Curr_Temp->Data);
             Curr_Temp = Curr_Temp->Right;
         }
         printf("\n");
