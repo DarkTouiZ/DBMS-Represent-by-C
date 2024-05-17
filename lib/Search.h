@@ -75,8 +75,8 @@ int GetPosition(Node *Column_Head, char *Target)
     Adjacent_Node *Actual_Data_Curr = Search_Adj_Node(Column_Head, Target, &Return_RowIndex);
     if (Actual_Data_Curr == NULL)
     {
-        printf("Not found data\n");
-        return -1;
+        printf(RED "\nData not found\n" RESET);
+        return -2;
     }
     return Return_RowIndex;
 }

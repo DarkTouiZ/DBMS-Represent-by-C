@@ -46,7 +46,6 @@ int main()
                 if (choice == 1)
                 {
                     InsertRecord(First_Table_Head);
-                    printTable(First_Table_Head);
                 }
                 else if (choice == 2)
                 {
@@ -71,7 +70,7 @@ int main()
                     printf("\nWhat is the row number you want to delete: ");
                     int RowIndex;
                     scanf(" %d", &RowIndex);
-                    DeleteRow(First_Table_Head, RowIndex);
+                    DeleteRow(First_Table_Head, RowIndex-1);
                 }
                 else if (choice == 2)
                 {
@@ -82,7 +81,7 @@ int main()
                 }
                 else if (choice == 3)
                 {
-                    printf("\nWhat is the row number & the column name you want to delete): ");
+                    printf("\nWhat is the row number & the column name you want to delete: ");
                     int RowIndex;
                     char ColumnName[MAX_STRING_LENGTH];
                     scanf("%d %s", &RowIndex, ColumnName);
@@ -102,7 +101,7 @@ int main()
                 printf(GREEN "enter the new data: " RESET);
                 char *NewData = (char *)malloc(100 * sizeof(char));
                 scanf(" %s", NewData);
-                SelectToChangeAt(First_Table_Head, row, column, NewData);
+                SelectToChangeAt(First_Table_Head, row-1, column, NewData);
                 free(NewData);
             }
             else if (strcmp(command, "search") == 0)
@@ -139,8 +138,8 @@ int main()
                         char Target[MAX_STRING_LENGTH];
                         scanf(" %s", Target);
                         int PositionIndex = GetPosition(Curr, Target);
-                        if (PositionIndex != -1)
-                            printf(GREEN "Row number of %s in column %s is %d"RESET , Target, ColumnName, PositionIndex);
+                        if (PositionIndex != -2)
+                            printf(GREEN "Row number of %s in column %s is %d"RESET , Target, ColumnName, PositionIndex+1);
                     }
                 }
                 else if (choice == 2)
