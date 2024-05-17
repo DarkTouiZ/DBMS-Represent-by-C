@@ -1,3 +1,9 @@
+#define RED "\x1b[31m"
+#define GREEN "\x1b[32m"
+#define RESET "\x1b[0m"
+#define BLUE "\x1b[34m"
+#define CYAN "\x1b[36m"
+
 bool is_Integer(char* Str){
     if(*Str == '\0'){
         return false;
@@ -27,7 +33,8 @@ void InsertRecord(Node* First_Table_Head){
     Node* Curr_Table_Head = First_Table_Head;
 
     // Print Text
-    printf("Input Data Seperated by space\n");
+    printf("\nInput Data Seperated by space\n");
+    printf(GREEN ">>> " RESET);
     // Node* Temp = Curr_Table_Head;
     // while(Temp != NULL){
     //     printf(" %s", Temp->Data);
@@ -63,7 +70,7 @@ void InsertRecord(Node* First_Table_Head){
         } else { // Default Case : Add to Tail
             while(is_Integer(Token) != Curr_Table_Head->Type){ // Loop until get match Data Type
                 // Get new Input only for this Column
-                printf("ERROR: Not match Data Type\nPlase Enter new data for Column %s", Curr_Table_Head->Data);
+                printf(RED "\nERROR: Not match Data Type%s\nPlase Enter new data for Column %s", RESET, Curr_Table_Head->Data);
                 if(Curr_Table_Head->Type == true){
                     printf("(Integer): ");
                 } else {
@@ -110,7 +117,7 @@ int Find_Row_Size(Adjacent_Node* Curr_Adj_Node){
 void InsertColumn(Node* First_Table_Head){
     // Get Column Name
     char Temp[MAX_STRING_LENGTH];
-    printf("Column Name: ");
+    printf("\nColumn Name: ");
     fgets(Temp, MAX_STRING_LENGTH, stdin);
     Temp[strcspn(Temp, "\n")] = '\0';
 

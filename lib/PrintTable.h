@@ -1,8 +1,15 @@
 // Just use : printTable(head);
 
+#define MAX_CELL_SIZE 13 // size = 12 char
+
+#define RED "\x1b[31m"
+#define GREEN "\x1b[32m"
+#define RESET "\x1b[0m"
+#define BLUE "\x1b[34m"
+#define CYAN "\x1b[36m"
+
 int max_size_row = 0;    // Max Number of Rows
 int max_size_col = 0;    // Max Number of Columns
-#define MAX_CELL_SIZE 13 // size = 12 char
 
 void freeLinkedList(Node *head)
 {
@@ -25,6 +32,8 @@ void freeLinkedList(Node *head)
 
 void FindSize(Node *head)
 {
+    max_size_row = 0;
+    max_size_col = 0;
     // Check if head is NULL
     if (head == NULL)
     {
@@ -68,7 +77,7 @@ void printTable(Node *Table)
     //  int num_display_rowNcol;
     int num_display_row;
     int num_display_col;
-    printf("How many cols you want to display: ");
+    printf("\nHow many cols you want to display: ");
     scanf(" %d", &num_display_col);
     printf("How many rows you want to display: ");
     scanf(" %d", &num_display_row);
@@ -119,21 +128,21 @@ void printTable(Node *Table)
         {
             if (i >= curr_col && i < curr_col + num_display_col && i < max_size_col)
             {
-                printf("| %-12s ", Current_Column_Print->Data);
+                printf(BLUE"|%s %-12s ",RESET , Current_Column_Print->Data);
             }
                 Current_Column_Print = Current_Column_Print->Next;
             // if(Current_Column_Print == NULL){
             //     break;
             // }
         }
-        printf("|\n");
+        printf(BLUE "|\n" RESET);
 
         // Print A Separete Line
         for (int i = curr_row; i < curr_row + num_display_row && i < max_size_row; i++)
         {
             if (i == curr_row)
             {
-                printf("----");
+                printf(CYAN "----");
                 for (int j = 0; j < num_display_col; j++)
                 {
                     printf("+");
@@ -142,16 +151,16 @@ void printTable(Node *Table)
                         printf("-");
                     }
                 }
-                printf("+\n");
+                printf("+\n" RESET);
             }
 
             // Print Record
             printf(" %-2d ", i + 1);
             for (int j = curr_col; j < curr_col + num_display_col && j < max_size_col; j++)
             {
-                printf("| %-12s ", Data[j][i].Data);
+                printf(CYAN "|%s %-12s ", RESET, Data[j][i].Data);
             }
-            printf("|\n");
+            printf(CYAN "|\n" RESET);
         }
 
         // Ask for command (w a s d)

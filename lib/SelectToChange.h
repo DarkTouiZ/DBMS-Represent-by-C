@@ -1,3 +1,7 @@
+#define RED "\x1b[31m"
+#define GREEN "\x1b[32m"
+#define RESET "\x1b[0m"
+
 void SelectToChangeAt(Node *Table, int rowindex, char *column, char *NewData)
 {
     // find the column
@@ -13,7 +17,7 @@ void SelectToChangeAt(Node *Table, int rowindex, char *column, char *NewData)
     }
     if (Current_Column == NULL)
     {
-        printf("column name not found\n");
+        printf(RED "\ncolumn name not found\n" RESET);
         return;
     }
 
@@ -24,7 +28,7 @@ void SelectToChangeAt(Node *Table, int rowindex, char *column, char *NewData)
     {
         if (Current_Row == NULL)
         {
-            printf("index not found\n");
+            printf(RED "\nindex not found\n" RESET);
             return;
         }
 

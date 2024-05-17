@@ -2,8 +2,11 @@
 
 int main()
 {
-    printf("Welcome to the Database Program\n");
-    printf("please enter file path or enter filename to create new\n");
+    system("cls");
+    printf("\n");
+    printf(CYAN "\tWelcome to the Database Program\n\n" RESET);
+    printf("Please enter file path or enter filename to create new (.csv)\n");
+    printf(GREEN ">>> " RESET);
     char *Table_name = (char *)malloc(100 * sizeof(char));
     scanf(" %s", Table_name);
     // strcpy(Table_name,"bin/test.csv");
@@ -20,8 +23,9 @@ int main()
         else if (main_Page == false)
         {
             // system("cls");
-            printf("\nPlease enter the command\n");
-            printf("table, insert, delete, update, search, graph, exit\n");
+            printf(CYAN "\n\n\tPlease enter the command\n" RESET);
+            printf("\ntable, insert, delete, update, search, graph, exit\n");
+            printf(GREEN ">>> " RESET);
             char *command = (char *)malloc(100 * sizeof(char));
             scanf(" %s", command);
             if (strcmp(command, "table") == 0)
@@ -32,9 +36,10 @@ int main()
             }
             else if (strcmp(command, "insert") == 0)
             {
-                printf("What kind of insert do you want?\n");
+                printf(MAGENTA "\nWhat kind of insert do you want?\n" RESET);
                 printf("1. Insert Row\n");
                 printf("2. Insert Column\n");
+                printf(GREEN ">>> " RESET);
                 int choice;
                 scanf(" %d", &choice);
                 while (getchar() != '\n');
@@ -49,50 +54,52 @@ int main()
                 }
                 else
                 {
-                    printf("Invalid choice\n");
+                    printf("\nInvalid choice");
                 }
             }
             else if (strcmp(command, "delete") == 0)
             {
-                printf("What kind of delete do you want?\n");
+                printf(MAGENTA "\nWhat kind of delete do you want?\n" RESET);
                 printf("1. Delete entire Row\n");
                 printf("2. Delete entire Column\n");
                 printf("3. Delete by specific Row and Column\n");
+                printf(GREEN ">>> " RESET);
                 int choice;
                 scanf(" %d", &choice);
                 if (choice == 1)
                 {
-                    printf("What is the row number you want to delete: ");
+                    printf("\nWhat is the row number you want to delete: ");
                     int RowIndex;
                     scanf(" %d", &RowIndex);
                     DeleteRow(First_Table_Head, RowIndex);
                 }
                 else if (choice == 2)
                 {
-                    printf("What is the column name you want to delete: ");
+                    printf("\nWhat is the column name you want to delete: ");
                     char ColumnName[MAX_STRING_LENGTH];
                     scanf(" %s", ColumnName);
                     DeleteColumn(First_Table_Head, ColumnName);
                 }
                 else if (choice == 3)
                 {
-                    printf("What is the row number & the column name you want to delete: ");
+                    printf("\nWhat is the row number & the column name you want to delete): ");
                     int RowIndex;
                     char ColumnName[MAX_STRING_LENGTH];
                     scanf("%d %s", &RowIndex, ColumnName);
-                    DeleteDataAt(First_Table_Head, RowIndex, ColumnName);
+                    DeleteDataAt(First_Table_Head, RowIndex-1, ColumnName);
                 }
                 else
                 {
-                    printf("Invalid choice\n");
+                    printf("\n");
+                    printf(RED "Invalid choice" RESET);
                 }
             }else if (strcmp(command, "update") == 0)
             {
-                printf("enter the row number and the column name you want to update: ");
+                printf(MAGENTA "Enter the row number and the column name you want to update: " RESET);
                 int row;
                 char column[MAX_STRING_LENGTH];
                 scanf(" %d %s", &row, column);
-                printf("enter the new data: ");
+                printf(GREEN "enter the new data: " RESET);
                 char *NewData = (char *)malloc(100 * sizeof(char));
                 scanf(" %s", NewData);
                 SelectToChangeAt(First_Table_Head, row, column, NewData);
@@ -100,15 +107,16 @@ int main()
             }
             else if (strcmp(command, "search") == 0)
             {
-                printf("What kind of search do you want?\n");
+                printf(MAGENTA "\nWhat kind of search do you want?\n" RESET);
                 printf("1. Search for row number\n");
                 printf("2. Search for record\n");
                 printf("3. Make indexing\n");
+                printf(GREEN ">>> " RESET);
                 int choice;
                 scanf(" %d", &choice);
                 if (choice == 1)
                 {
-                    printf("What is the column name you want to search: ");
+                    printf("\nWhat is the column name you want to search: ");
                     char ColumnName[MAX_STRING_LENGTH];
                     scanf(" %s", ColumnName);
 
@@ -123,7 +131,7 @@ int main()
                     }
                     if (Curr == NULL)
                     {
-                        printf("Column name not match any in database\n");
+                        printf(RED"\nColumn name not match any in database\n" RESET);
                     }
                     else
                     {
@@ -132,12 +140,12 @@ int main()
                         scanf(" %s", Target);
                         int PositionIndex = GetPosition(Curr, Target);
                         if (PositionIndex != -1)
-                            printf("Row number of %s in column %s is %d", Target, ColumnName, PositionIndex);
+                            printf(GREEN "Row number of %s in column %s is %d"RESET , Target, ColumnName, PositionIndex);
                     }
                 }
                 else if (choice == 2)
                 {
-                    printf("What is the column name You want to search: ");
+                    printf("\nWhat is the column name You want to search: ");
                     char ColumnName[MAX_STRING_LENGTH];
                     scanf(" %s", ColumnName);
 
@@ -152,7 +160,7 @@ int main()
                     }
                     if (Curr == NULL)
                     {
-                        printf("Column name not match any in database\n");
+                        printf(RED "\nColumn name not match any in database\n" RESET);
                     }
                     else
                     {
@@ -169,7 +177,7 @@ int main()
                 }
                 else if (choice == 3)
                 {
-                    printf("what is column name do you want to make indexing: ");
+                    printf("\nWhat is column name do you want to make indexing: ");
                     char ColumnName[MAX_STRING_LENGTH];
                     scanf(" %s", ColumnName);
                     Node *Curr = First_Table_Head;
@@ -183,21 +191,23 @@ int main()
                     }
                     if (Curr == NULL)
                     {
-                        printf("Column name not match any in database\n");
+                        printf(RED "\nColumn name not match any in database\n" RESET);
                     }
                     else
                     {
                         MakeIndexing(Curr);
+                        printf(GREEN "\nIndexing Success\n" RESET);
                     }
                 }
                 else
                 {
-                    printf("Invalid choice\n");
+                    printf("\n");
+                    printf(RED "Invalid choice" RESET);
                 }
             }
             else if (strcmp(command, "graph") == 0)
             {
-                printf("please enter the column name follow these requirements\n");
+                printf(MAGENTA "\nPlease enter the column name follow these requirements\n" RESET);
                 printf("initial vertex column name: ");
                 char initialName[MAX_STRING_LENGTH];
                 scanf(" %s", initialName);
@@ -212,7 +222,7 @@ int main()
                 }
                 if (Curr1 == NULL)
                 {
-                    printf("Column name not match any in database\n");
+                    printf(RED "\nColumn name not match any in database\n" RESET);
                 }
                 else
                 {
@@ -230,7 +240,7 @@ int main()
                     }
                     if (Curr2 == NULL)
                     {
-                        printf("Column name not match any in database\n");
+                        printf(RED "\nColumn name not match any in database\n" RESET);
                     }
                     else
                     {
@@ -248,14 +258,15 @@ int main()
                         }
                         if (Curr3 == NULL)
                         {
-                            printf("Column name not match any in database\n");
+                            printf(RED "\nColumn name not match any in database\n" RESET);
                         }
                         else
                         {
-                            printf("What kind of graph algorithm you want to use?\n");
+                            printf("\nWhat kind of graph algorithm you want to use?\n");
                             printf("1. Shortest Path\n");
                             printf("2. Breadth-First Search\n");
                             printf("3. Depth-First Search\n");
+                            printf(GREEN ">>> " RESET);
                             int choice;
                             scanf(" %d", &choice);
                             if (choice == 1)
@@ -272,7 +283,8 @@ int main()
                             }
                             else
                             {
-                                printf("Invalid choice\n");
+                                printf("\n");
+                                printf(RED "Invalid choice" RESET);
                             }
                         }
                     }
@@ -280,13 +292,13 @@ int main()
             }
             else if (strcmp(command, "exit") == 0)
             {
-                linked_list_to_csv(First_Table_Head, "../bin/test_output.csv");
+                linked_list_to_csv(First_Table_Head, Table_name);
                 fclose(file);
                 break;
             }
             else
             {
-                printf("Invalid command\n");
+                printf(RED "Invalid command\n" RESET);
             }
         }
     }
