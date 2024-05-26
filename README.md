@@ -4,11 +4,13 @@
 
 Function to use 👍
 
+```
 void GetShortestPathOF(Node *Initial_vertex_HEADER, Node *Terminal_vertex_HEADER, Node* weight_HEADER);
 
 void GetBFS(Node *Initial_vertex_HEADER, Node *Terminal_vertex_HEADER, Node* weight_HEADER);
 
 void GetDFS(Node *Initial_vertex_HEADER, Node *Terminal_vertex_HEADER, Node* weight_HEADER);
+```
 
 - source and destination รับ input ใน function แล้ว
 
