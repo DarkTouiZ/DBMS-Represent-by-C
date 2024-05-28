@@ -1,12 +1,6 @@
 #define MAX_LINE_LENGTH MAX_STRING_LENGTH
 #define MAX_FIELD_LENGTH 100
 
-// Define ANSI escape codes for styling
-#define RESET "\x1b[0m"
-#define RED "\x1b[31m"
-#define GREEN "\x1b[32m"
-#define MAGENTA "\x1b[35m"
-
 bool is_Integer(char* Str);
 void Linked_Left_Right(Node* First_Head_Table){
     Adjacent_Node* Data_PreCurr = NULL;
