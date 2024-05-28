@@ -50,7 +50,7 @@ int main()
                 }
                 else if (choice == 2)
                 {
-                    InsertColumn(First_Table_Head);
+                    InsertColumn(&First_Table_Head);
                 }
                 else
                 {

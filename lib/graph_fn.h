@@ -1,9 +1,6 @@
 // false/true :: This Column contain with String/Integer
 // #include "Header.c"
 // Define ANSI escape codes for styling
-#define RESET "\x1b[0m"
-#define RED "\x1b[31m"
-#define GREEN "\x1b[32m"
 
 #define MAX MAX_STRING_LENGTH
 #define MAX_VERTICES 10000

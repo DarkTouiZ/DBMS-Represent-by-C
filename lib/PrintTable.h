@@ -2,15 +2,6 @@
 
 #define MAX_CELL_SIZE 13 // size = 12 char
 
-#define RED "\x1b[31m"
-#define GREEN "\x1b[32m"
-#define RESET "\x1b[0m"
-#define BLUE "\x1b[34m"
-#define CYAN "\x1b[36m"
-
-int max_size_row = 0;    // Max Number of Rows
-int max_size_col = 0;    // Max Number of Columns
-
 void freeLinkedList(Node *head)
 {
     Node *temp;
@@ -37,7 +28,6 @@ void FindSize(Node *head)
     // Check if head is NULL
     if (head == NULL)
     {
-        printf("Error: Head node is NULL\n");
         return;
     }
     Node *curr_Table_Head = head;
@@ -72,7 +62,11 @@ void printTable(Node *Table)
 {
     // Find Max Col and Row Size
     FindSize(Table);
-
+    if(max_size_col == 0 || max_size_row == 0){
+        printf(RED "No available data to display" RESET);
+        main_Page = false;
+        return;
+    }
     // Begin Print Table Function
     //  int num_display_rowNcol;
     int num_display_row;
@@ -164,7 +158,7 @@ void printTable(Node *Table)
         }
 
         // Ask for command (w a s d)
-        printf("Enter 'w' to move up, 'a' to move left, 's' to move down, 'd' to move right, 'o' to option, 'e' to exit: ");
+        printf("Enter 'w' to move up, 'a' to move left, 's' to move down, 'd' to move right, 'o' to option : ");
         scanf(" %c", &move_command);
 
         if (move_command == 'd' && curr_col + num_display_col < max_size_col)
@@ -187,11 +181,6 @@ void printTable(Node *Table)
         { // move to option page
             main_Page = false;
             return;
-        }
-        else if (move_command == 'e')
-        { // Exit
-            main_Page = false;
-            exit(0);
         }
         system("cls");
     }

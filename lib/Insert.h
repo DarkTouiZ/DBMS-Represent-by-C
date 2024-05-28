@@ -114,7 +114,7 @@ int Find_Row_Size(Adjacent_Node* Curr_Adj_Node){
     return Count;
 }
 
-void InsertColumn(Node* First_Table_Head){
+void InsertColumn(Node** First_Table_Head){
     // Get Column Name
     char Temp[MAX_STRING_LENGTH];
     printf("\nColumn Name: ");
@@ -133,11 +133,11 @@ void InsertColumn(Node* First_Table_Head){
     new_Head_Node->Adj_Tail = NULL;
 
     // Add new Column to Database
-    Node* Curr_Table_Head = First_Table_Head;
-    if(Curr_Table_Head == NULL){ // Handle for case First Column
-        Curr_Table_Head = new_Head_Node;
+    if (*First_Table_Head == NULL) { // Handle for case First Column
+        *First_Table_Head = new_Head_Node;
     } else {
-        while(Curr_Table_Head->Next != NULL){
+        Node* Curr_Table_Head = *First_Table_Head;
+        while (Curr_Table_Head->Next != NULL) {
             Curr_Table_Head = Curr_Table_Head->Next;
         }
         new_Head_Node->Prev = Curr_Table_Head;
@@ -156,7 +156,10 @@ void InsertColumn(Node* First_Table_Head){
     // Fill new Data for each Record
     char* Token = strtok(InputLine, " ");
     int Count = 1;
-    int Max = Find_Row_Size(First_Table_Head->Adj_Head);
+    int Max = 0;
+    if (*First_Table_Head != NULL) {
+        Max = Find_Row_Size((*First_Table_Head)->Adj_Head);
+    }
 
     Adjacent_Node* PreCurr_Data = NULL; // Store PreCurr Node
     while(Token != NULL){ // Add to Tail

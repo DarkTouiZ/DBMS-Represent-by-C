@@ -1,7 +1,3 @@
-#define RED "\x1b[31m"
-#define GREEN "\x1b[32m"
-#define RESET "\x1b[0m"
-
 void SelectToChangeAt(Node *Table, int rowindex, char *column, char *NewData)
 {
     // find the column
