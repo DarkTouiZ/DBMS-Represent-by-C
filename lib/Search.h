@@ -37,7 +37,7 @@ Tree *Search_Tree_Node(Tree *Root, char *Target)
 
 Adjacent_Node *Search_Adj_Node(Node *Table_Head, char *Target, int *Return_RowIndex)
 {
-    Adjacent_Node *Actual_Data;
+    Adjacent_Node *Actual_Data = NULL;
 
     if (Table_Head->isIndexing)
     { // Search in Tree
