@@ -1,5 +1,5 @@
 Origin,Destination,Distance
-Agra,Delhi,240
+CPE,Delhi,240
 Agra,Lucknow,334
 Agra,Kanpur,277
 Ahmedabad,Mumbai,277
@@ -82,4 +82,4 @@ Varanasi,Patna,683
 Varanasi,Kolkata,312
 Varanasi,Lucknow,441
 Vishakhapatnam,Bhubaneswar,618
-Vishakhapatnam,Hyderabad,(null)
+Vishakhapatnam,Hyderabad,621
